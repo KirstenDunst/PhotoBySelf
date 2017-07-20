@@ -1,0 +1,2 @@
+# PhotoBySelf
+自定义添加相机使用GPUImage和AVFoundation基类的实现
