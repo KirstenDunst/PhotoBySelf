@@ -7,15 +7,19 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		1F53B3B51F207D9400460012 /* CameraViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1F53B3B41F207D9400460012 /* CameraViewController.m */; };
 		1FC5ED701F2060560046411D /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 1FC5ED6F1F2060560046411D /* main.m */; };
 		1FC5ED731F2060560046411D /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 1FC5ED721F2060560046411D /* AppDelegate.m */; };
 		1FC5ED761F2060560046411D /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1FC5ED751F2060560046411D /* ViewController.m */; };
 		1FC5ED791F2060560046411D /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1FC5ED771F2060560046411D /* Main.storyboard */; };
 		1FC5ED7B1F2060560046411D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1FC5ED7A1F2060560046411D /* Assets.xcassets */; };
 		1FC5ED7E1F2060560046411D /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1FC5ED7C1F2060560046411D /* LaunchScreen.storyboard */; };
+		3DB6A0377A1491AD2719C4F2 /* libPods-PhotoByAVFou.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 804DE660BB202A828E045785 /* libPods-PhotoByAVFou.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		1F53B3B31F207D9400460012 /* CameraViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CameraViewController.h; sourceTree = "<group>"; };
+		1F53B3B41F207D9400460012 /* CameraViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CameraViewController.m; sourceTree = "<group>"; };
 		1FC5ED6B1F2060560046411D /* PhotoByAVFou.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PhotoByAVFou.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		1FC5ED6F1F2060560046411D /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		1FC5ED711F2060560046411D /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -26,6 +30,9 @@
 		1FC5ED7A1F2060560046411D /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		1FC5ED7D1F2060560046411D /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		1FC5ED7F1F2060560046411D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		60AA485F23A80E74748B8D26 /* Pods-PhotoByAVFou.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PhotoByAVFou.release.xcconfig"; path = "Pods/Target Support Files/Pods-PhotoByAVFou/Pods-PhotoByAVFou.release.xcconfig"; sourceTree = "<group>"; };
+		804DE660BB202A828E045785 /* libPods-PhotoByAVFou.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-PhotoByAVFou.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		BD6E3224A89A929E4D71B1B4 /* Pods-PhotoByAVFou.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PhotoByAVFou.debug.xcconfig"; path = "Pods/Target Support Files/Pods-PhotoByAVFou/Pods-PhotoByAVFou.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -33,6 +40,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3DB6A0377A1491AD2719C4F2 /* libPods-PhotoByAVFou.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -44,6 +52,8 @@
 			children = (
 				1FC5ED6D1F2060560046411D /* PhotoByAVFou */,
 				1FC5ED6C1F2060560046411D /* Products */,
+				50FFF3A3E9002778F1896F8D /* Pods */,
+				614CED67D58A091FC8C0DD70 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -62,6 +72,8 @@
 				1FC5ED721F2060560046411D /* AppDelegate.m */,
 				1FC5ED741F2060560046411D /* ViewController.h */,
 				1FC5ED751F2060560046411D /* ViewController.m */,
+				1F53B3B31F207D9400460012 /* CameraViewController.h */,
+				1F53B3B41F207D9400460012 /* CameraViewController.m */,
 				1FC5ED771F2060560046411D /* Main.storyboard */,
 				1FC5ED7A1F2060560046411D /* Assets.xcassets */,
 				1FC5ED7C1F2060560046411D /* LaunchScreen.storyboard */,
@@ -79,6 +91,23 @@
 			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
+		50FFF3A3E9002778F1896F8D /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				BD6E3224A89A929E4D71B1B4 /* Pods-PhotoByAVFou.debug.xcconfig */,
+				60AA485F23A80E74748B8D26 /* Pods-PhotoByAVFou.release.xcconfig */,
+			);
+			name = Pods;
+			sourceTree = "<group>";
+		};
+		614CED67D58A091FC8C0DD70 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				804DE660BB202A828E045785 /* libPods-PhotoByAVFou.a */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -86,9 +115,12 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 1FC5ED821F2060560046411D /* Build configuration list for PBXNativeTarget "PhotoByAVFou" */;
 			buildPhases = (
+				88BF248F53EF8183C526E58D /* [CP] Check Pods Manifest.lock */,
 				1FC5ED671F2060550046411D /* Sources */,
 				1FC5ED681F2060550046411D /* Frameworks */,
 				1FC5ED691F2060550046411D /* Resources */,
+				B40771EBC0F884BA773765D2 /* [CP] Embed Pods Frameworks */,
+				DE66CC6FE412EC5D39553274 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -110,6 +142,7 @@
 				TargetAttributes = {
 					1FC5ED6A1F2060550046411D = {
 						CreatedOnToolsVersion = 8.3.2;
+						DevelopmentTeam = BQ9TFQKXJU;
 						ProvisioningStyle = Automatic;
 					};
 				};
@@ -145,12 +178,61 @@
 		};
 /* End PBXResourcesBuildPhase section */
 
+/* Begin PBXShellScriptBuildPhase section */
+		88BF248F53EF8183C526E58D /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
+			showEnvVarsInLog = 0;
+		};
+		B40771EBC0F884BA773765D2 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-PhotoByAVFou/Pods-PhotoByAVFou-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		DE66CC6FE412EC5D39553274 /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-PhotoByAVFou/Pods-PhotoByAVFou-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
 		1FC5ED671F2060550046411D /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 				1FC5ED761F2060560046411D /* ViewController.m in Sources */,
+				1F53B3B51F207D9400460012 /* CameraViewController.m in Sources */,
 				1FC5ED731F2060560046411D /* AppDelegate.m in Sources */,
 				1FC5ED701F2060560046411D /* main.m in Sources */,
 			);
@@ -270,22 +352,26 @@
 		};
 		1FC5ED831F2060560046411D /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = BD6E3224A89A929E4D71B1B4 /* Pods-PhotoByAVFou.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				DEVELOPMENT_TEAM = BQ9TFQKXJU;
 				INFOPLIST_FILE = PhotoByAVFou/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.zssy.AM.PhotoByAVFou;
+				PRODUCT_BUNDLE_IDENTIFIER = com.zssy.AM.text;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Debug;
 		};
 		1FC5ED841F2060560046411D /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 60AA485F23A80E74748B8D26 /* Pods-PhotoByAVFou.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				DEVELOPMENT_TEAM = BQ9TFQKXJU;
 				INFOPLIST_FILE = PhotoByAVFou/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.zssy.AM.PhotoByAVFou;
+				PRODUCT_BUNDLE_IDENTIFIER = com.zssy.AM.text;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Release;
@@ -309,6 +395,7 @@
 				1FC5ED841F2060560046411D /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
