@@ -23,6 +23,7 @@ typedef enum: NSInteger{
 {
      BOOL isUsingFrontFacingCamera;
     AVCaptureVideoDataOutput *videoDataOutput;
+    NSData *jpegData;
 }
 @property GLKView *videoPreviewView;
 @property CIContext *ciContext;
@@ -117,19 +118,23 @@ typedef enum: NSInteger{
     self.videoInput = [[AVCaptureDeviceInput alloc] initWithDevice:device error:&error];
     if (error) {
         NSLog(@"%@",error);
+    }else{
+        if ([self.session canAddInput:self.videoInput]) {
+            [self.session addInput:self.videoInput];
+        }
     }
     
+    
     self.stillImageOutput = [[AVCaptureStillImageOutput alloc] init];
+    if ([self.session canAddOutput:self.stillImageOutput]) {
+        [self.session addOutput:self.stillImageOutput];
+    }
     //输出设置。AVVideoCodecJPEG   输出jpeg格式图片
     NSDictionary * outputSettings = [[NSDictionary alloc] initWithObjectsAndKeys:AVVideoCodecJPEG,AVVideoCodecKey, nil];
     [self.stillImageOutput setOutputSettings:outputSettings];
     
-    if ([self.session canAddInput:self.videoInput]) {
-        [self.session addInput:self.videoInput];
-    }
-    if ([self.session canAddOutput:self.stillImageOutput]) {
-        [self.session addOutput:self.stillImageOutput];
-    }
+    
+   
     
     // CoreImage wants BGRA pixel format
     NSDictionary *outputSettingsVideo = @{ (id)kCVPixelBufferPixelFormatTypeKey : [NSNumber numberWithInteger:kCVPixelFormatType_32BGRA]};
@@ -150,13 +155,11 @@ typedef enum: NSInteger{
         NSLog(@"Cannot add video data output");
         self.session = nil;
         return;
+    }else{
+        [self.session addOutput:videoDataOutput];
     }
     
-    
-    [self.session addOutput:videoDataOutput];
-    
-    
-    
+
     //初始化预览图层
     self.previewLayer = [[AVCaptureVideoPreviewLayer alloc] initWithSession:self.session];
     [self.previewLayer setVideoGravity:AVLayerVideoGravityResizeAspect];
@@ -172,7 +175,7 @@ typedef enum: NSInteger{
    
     
     
-    NSArray *Arr  =@[@"返回",@"拍照",@"闪光灯",@"美颜",@"特效",@"切换摄像"];
+    NSArray *Arr  =@[@"返回",@"拍照",@"闪光灯",@"滤镜",@"特效",@"切换摄像"];
     for (int i = 0; i<Arr.count; i++) {
         UIButton *myCreateButton = [UIButton buttonWithType:UIButtonTypeCustom];
         myCreateButton.frame = CGRectMake(0, 20+50*i, 100, 50);
@@ -312,8 +315,8 @@ typedef enum: NSInteger{
     [stillImageConnection setVideoScaleAndCropFactor:self.effectiveScale];
     
     [self.stillImageOutput captureStillImageAsynchronouslyFromConnection:stillImageConnection completionHandler:^(CMSampleBufferRef imageDataSampleBuffer, NSError *error) {
-        
-        NSData *jpegData = [AVCapturePhotoOutput JPEGPhotoDataRepresentationForJPEGSampleBuffer:imageDataSampleBuffer previewPhotoSampleBuffer:nil];
+    
+    jpegData = [AVCapturePhotoOutput JPEGPhotoDataRepresentationForJPEGSampleBuffer:imageDataSampleBuffer previewPhotoSampleBuffer:nil];
         
         PHAuthorizationStatus status = [PHPhotoLibrary authorizationStatus];
         if (status == PHAuthorizationStatusDenied) {
@@ -383,14 +386,22 @@ typedef enum: NSInteger{
 - (void)beautifulFace{
     static BOOL isNeedBeautiful = YES;
     if (isNeedBeautiful) {
-        [videoDataOutput setSampleBufferDelegate:self queue:_sessionQueue];
+        [self.previewLayer addSublayer:_videoPreviewView.layer];
     }else{
-        [videoDataOutput setSampleBufferDelegate:nil queue:_sessionQueue];
+        [_videoPreviewView.layer removeFromSuperlayer];
     }
     isNeedBeautiful = !isNeedBeautiful;
 }
 - (void)captureOutput:(AVCaptureOutput *)captureOutput didOutputSampleBuffer:(CMSampleBufferRef)sampleBuffer fromConnection:(AVCaptureConnection *)connection
 {
+//    AVCaptureConnection *stillImageConnection = [captureOutput connectionWithMediaType:AVMediaTypeVideo];
+//    
+//    [self.stillImageOutput captureStillImageAsynchronouslyFromConnection:stillImageConnection completionHandler:^(CMSampleBufferRef imageDataSampleBuffer, NSError *error) {
+//        
+//        jpegData = [AVCapturePhotoOutput JPEGPhotoDataRepresentationForJPEGSampleBuffer:imageDataSampleBuffer previewPhotoSampleBuffer:nil];
+//        
+//    }];    
+    
     CVImageBufferRef imageBuffer = CMSampleBufferGetImageBuffer(sampleBuffer);
     CIImage *sourceImage = [CIImage imageWithCVPixelBuffer:(CVPixelBufferRef)imageBuffer options:nil];
     CGRect sourceExtent = sourceImage.extent;
