@@ -19,11 +19,12 @@ typedef enum: NSInteger{
     BTNTAG = 10,
 }BTNTags;
 
-@interface CameraViewController ()<UIGestureRecognizerDelegate,AVCaptureVideoDataOutputSampleBufferDelegate>
+@interface CameraViewController ()<UIGestureRecognizerDelegate,AVCaptureVideoDataOutputSampleBufferDelegate,AVCaptureMetadataOutputObjectsDelegate>
 {
      BOOL isUsingFrontFacingCamera;
     AVCaptureVideoDataOutput *videoDataOutput;
-    NSData *jpegData;
+    UIImage *largeImage;
+    BOOL isNeedBeautiful;
 }
 @property GLKView *videoPreviewView;
 @property CIContext *ciContext;
@@ -57,9 +58,23 @@ typedef enum: NSInteger{
  *  最后的缩放比例
  */
 @property(nonatomic,assign)CGFloat effectiveScale;
+
+@property(nonatomic, strong)AVCaptureMetadataOutput *metadataOutput;
+
+
 @end
 
 @implementation CameraViewController
+-(AVCaptureMetadataOutput *)metadataOutput{
+    if (_metadataOutput == nil) {
+        _metadataOutput = [[AVCaptureMetadataOutput alloc]init];
+        [_metadataOutput setMetadataObjectsDelegate:self queue:dispatch_get_main_queue()];
+        //设置扫描区域
+        _metadataOutput.rectOfInterest = self.view.bounds;
+    }
+    return _metadataOutput;
+}
+
 - (void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:YES];
     if (self.session) {
@@ -148,7 +163,7 @@ typedef enum: NSInteger{
     
     videoDataOutput.alwaysDiscardsLateVideoFrames = YES;
     // begin configure capture session
-    [self.session beginConfiguration];
+    
     
     if (![self.session canAddOutput:videoDataOutput])
     {
@@ -159,6 +174,21 @@ typedef enum: NSInteger{
         [self.session addOutput:videoDataOutput];
     }
     
+//使用二维码扫描和人脸识别的metadataOutput
+    if ([self.session canAddOutput:self.metadataOutput]) {
+        [self.session addOutput:self.metadataOutput];
+        //设置扫码格式，
+//        self.metadataOutput.metadataObjectTypes = @[
+//                                                    AVMetadataObjectTypeQRCode,
+//                                                    AVMetadataObjectTypeEAN13Code,
+//                                                    AVMetadataObjectTypeEAN8Code,
+//                                                    AVMetadataObjectTypeCode128Code
+//                                                    ];
+        
+//        设置人脸识别的扫码格式
+        self.metadataOutput.metadataObjectTypes = @[AVMetadataObjectTypeFace];
+    }
+    [self.session beginConfiguration];
 
     //初始化预览图层
     self.previewLayer = [[AVCaptureVideoPreviewLayer alloc] initWithSession:self.session];
@@ -171,8 +201,6 @@ typedef enum: NSInteger{
     pinch.delegate = self;
     [self.view addGestureRecognizer:pinch];
     
-    
-   
     
     
     NSArray *Arr  =@[@"返回",@"拍照",@"闪光灯",@"滤镜",@"特效",@"切换摄像"];
@@ -193,8 +221,9 @@ typedef enum: NSInteger{
     _videoPreviewView.enableSetNeedsDisplay = NO;
     _videoPreviewView.transform = CGAffineTransformMakeRotation(M_PI_2);
     _videoPreviewView.frame = self.view.bounds;
-    [self.previewLayer addSublayer:_videoPreviewView.layer];
+//    [self.previewLayer addSublayer:_videoPreviewView.layer];
 //    [self.previewLayer sendSubviewToBack:_videoPreviewView];
+    isNeedBeautiful = YES;
     
     [_videoPreviewView bindDrawable];
     _videoPreviewViewBounds = CGRectZero;
@@ -205,7 +234,6 @@ typedef enum: NSInteger{
     
     if ([[AVCaptureDevice devicesWithMediaType:AVMediaTypeVideo] count] > 0)
     {
-        
         [self initWithCamera];
     }
     else
@@ -308,16 +336,16 @@ typedef enum: NSInteger{
 
 //拍照
 - (void)takePhotoPicture{
-    AVCaptureConnection *stillImageConnection = [self.stillImageOutput connectionWithMediaType:AVMediaTypeVideo];
-    UIDeviceOrientation curDeviceOrientation = [[UIDevice currentDevice] orientation];
-    AVCaptureVideoOrientation avcaptureOrientation = [self avOrientationForDeviceOrientation:curDeviceOrientation];
-    [stillImageConnection setVideoOrientation:avcaptureOrientation];
-    [stillImageConnection setVideoScaleAndCropFactor:self.effectiveScale];
+//    AVCaptureConnection *stillImageConnection = [self.stillImageOutput connectionWithMediaType:AVMediaTypeVideo];
+//    UIDeviceOrientation curDeviceOrientation = [[UIDevice currentDevice] orientation];
+//    AVCaptureVideoOrientation avcaptureOrientation = [self avOrientationForDeviceOrientation:curDeviceOrientation];
+//    [stillImageConnection setVideoOrientation:avcaptureOrientation];
+//    [stillImageConnection setVideoScaleAndCropFactor:self.effectiveScale];
     
-    [self.stillImageOutput captureStillImageAsynchronouslyFromConnection:stillImageConnection completionHandler:^(CMSampleBufferRef imageDataSampleBuffer, NSError *error) {
+//    [self.stillImageOutput captureStillImageAsynchronouslyFromConnection:stillImageConnection completionHandler:^(CMSampleBufferRef imageDataSampleBuffer, NSError *error) {
+//    
+//    jpegData = [AVCapturePhotoOutput JPEGPhotoDataRepresentationForJPEGSampleBuffer:imageDataSampleBuffer previewPhotoSampleBuffer:nil];
     
-    jpegData = [AVCapturePhotoOutput JPEGPhotoDataRepresentationForJPEGSampleBuffer:imageDataSampleBuffer previewPhotoSampleBuffer:nil];
-        
         PHAuthorizationStatus status = [PHPhotoLibrary authorizationStatus];
         if (status == PHAuthorizationStatusDenied) {
             NSLog(@"用户拒绝当前应用访问相册,我们需要提醒用户打开访问开关");
@@ -326,10 +354,10 @@ typedef enum: NSInteger{
         }else {
             NSLog(@"用户允许当前应用访问相册");
             //2.保存图片到系统相册
-            UIImageWriteToSavedPhotosAlbum([UIImage imageWithData:jpegData], self, @selector(image:didFinishSavingWithError:contextInfo:), nil);
+            UIImageWriteToSavedPhotosAlbum(largeImage, self, @selector(image:didFinishSavingWithError:contextInfo:), nil);
         }
         
-    }];
+//    }];
 }
 - (AVCaptureVideoOrientation)avOrientationForDeviceOrientation:(UIDeviceOrientation)deviceOrientation
 {
@@ -384,13 +412,13 @@ typedef enum: NSInteger{
 
 //美颜,即添加滤镜。
 - (void)beautifulFace{
-    static BOOL isNeedBeautiful = YES;
     if (isNeedBeautiful) {
         [self.previewLayer addSublayer:_videoPreviewView.layer];
+        isNeedBeautiful = NO;
     }else{
         [_videoPreviewView.layer removeFromSuperlayer];
+        isNeedBeautiful = YES;
     }
-    isNeedBeautiful = !isNeedBeautiful;
 }
 - (void)captureOutput:(AVCaptureOutput *)captureOutput didOutputSampleBuffer:(CMSampleBufferRef)sampleBuffer fromConnection:(AVCaptureConnection *)connection
 {
@@ -401,66 +429,122 @@ typedef enum: NSInteger{
 //        jpegData = [AVCapturePhotoOutput JPEGPhotoDataRepresentationForJPEGSampleBuffer:imageDataSampleBuffer previewPhotoSampleBuffer:nil];
 //        
 //    }];    
-    
-    CVImageBufferRef imageBuffer = CMSampleBufferGetImageBuffer(sampleBuffer);
-    CIImage *sourceImage = [CIImage imageWithCVPixelBuffer:(CVPixelBufferRef)imageBuffer options:nil];
-    CGRect sourceExtent = sourceImage.extent;
-    
-    // Image processing
-    CIFilter * vignetteFilter = [CIFilter filterWithName:@"CIVignetteEffect"];
-    [vignetteFilter setValue:sourceImage forKey:kCIInputImageKey];
-    [vignetteFilter setValue:[CIVector vectorWithX:sourceExtent.size.width/2 Y:sourceExtent.size.height/2] forKey:kCIInputCenterKey];
-    [vignetteFilter setValue:@(sourceExtent.size.width/2) forKey:kCIInputRadiusKey];
-    CIImage *filteredImage = [vignetteFilter outputImage];
-    
-    CIFilter *effectFilter = [CIFilter filterWithName:@"CIPhotoEffectInstant"];
-    [effectFilter setValue:filteredImage forKey:kCIInputImageKey];
-    filteredImage = [effectFilter outputImage];
-    
-    
-    CGFloat sourceAspect = sourceExtent.size.width / sourceExtent.size.height;
-    CGFloat previewAspect = _videoPreviewViewBounds.size.width  / _videoPreviewViewBounds.size.height;
-    
-    // we want to maintain the aspect radio of the screen size, so we clip the video image
-    CGRect drawRect = sourceExtent;
-    if (sourceAspect > previewAspect)
-    {
-        // use full height of the video image, and center crop the width
-        drawRect.origin.x += (drawRect.size.width - drawRect.size.height * previewAspect) / 2.0;
-        drawRect.size.width = drawRect.size.height * previewAspect;
+    if (!isNeedBeautiful) {
+        CVImageBufferRef imageBuffer = CMSampleBufferGetImageBuffer(sampleBuffer);
+        CIImage *sourceImage = [CIImage imageWithCVPixelBuffer:(CVPixelBufferRef)imageBuffer options:nil];
+        CGRect sourceExtent = sourceImage.extent;
+        
+        // Image processing
+        CIFilter * vignetteFilter = [CIFilter filterWithName:@"CIVignetteEffect"];
+        [vignetteFilter setValue:sourceImage forKey:kCIInputImageKey];
+        [vignetteFilter setValue:[CIVector vectorWithX:sourceExtent.size.width/2 Y:sourceExtent.size.height/2] forKey:kCIInputCenterKey];
+        [vignetteFilter setValue:@(sourceExtent.size.width/2) forKey:kCIInputRadiusKey];
+        CIImage *filteredImage = [vignetteFilter outputImage];
+        
+        CIFilter *effectFilter = [CIFilter filterWithName:@"CIPhotoEffectInstant"];
+        [effectFilter setValue:filteredImage forKey:kCIInputImageKey];
+        filteredImage = [effectFilter outputImage];
+        
+        
+        CGFloat sourceAspect = sourceExtent.size.width / sourceExtent.size.height;
+        CGFloat previewAspect = _videoPreviewViewBounds.size.width  / _videoPreviewViewBounds.size.height;
+        
+        // we want to maintain the aspect radio of the screen size, so we clip the video image
+        CGRect drawRect = sourceExtent;
+        if (sourceAspect > previewAspect)
+        {
+            // use full height of the video image, and center crop the width
+            drawRect.origin.x += (drawRect.size.width - drawRect.size.height * previewAspect) / 2.0;
+            drawRect.size.width = drawRect.size.height * previewAspect;
+        }
+        else
+        {
+            // use full width of the video image, and center crop the height
+            drawRect.origin.y += (drawRect.size.height - drawRect.size.width / previewAspect) / 2.0;
+            drawRect.size.height = drawRect.size.width / previewAspect;
+        }
+        
+        [_videoPreviewView bindDrawable];
+        
+        if (_eaglContext != [EAGLContext currentContext])
+            [EAGLContext setCurrentContext:_eaglContext];
+        
+        // clear eagl view to grey
+        glClearColor(0.5, 0.5, 0.5, 1.0);
+        glClear(GL_COLOR_BUFFER_BIT);
+        
+        // set the blend mode to "source over" so that CI will use that
+        glEnable(GL_BLEND);
+        glBlendFunc(GL_ONE, GL_ONE_MINUS_SRC_ALPHA);
+        
+        if (filteredImage)
+            [_ciContext drawImage:filteredImage inRect:_videoPreviewViewBounds fromRect:drawRect];
+        
+        [_videoPreviewView display];
     }
-    else
-    {
-        // use full width of the video image, and center crop the height
-        drawRect.origin.y += (drawRect.size.height - drawRect.size.width / previewAspect) / 2.0;
-        drawRect.size.height = drawRect.size.width / previewAspect;
-    }
     
-    [_videoPreviewView bindDrawable];
     
-    if (_eaglContext != [EAGLContext currentContext])
-        [EAGLContext setCurrentContext:_eaglContext];
-    
-    // clear eagl view to grey
-    glClearColor(0.5, 0.5, 0.5, 1.0);
-    glClear(GL_COLOR_BUFFER_BIT);
-    
-    // set the blend mode to "source over" so that CI will use that
-    glEnable(GL_BLEND);
-    glBlendFunc(GL_ONE, GL_ONE_MINUS_SRC_ALPHA);
-    
-    if (filteredImage)
-        [_ciContext drawImage:filteredImage inRect:_videoPreviewViewBounds fromRect:drawRect];
-    
-    [_videoPreviewView display];
+   largeImage = [self imageFromSampleBuffer:sampleBuffer];
 }
 
+
+//CMSampleBufferRef转NSImage
+-(UIImage *)imageFromSampleBuffer:(CMSampleBufferRef)sampleBuffer{
+    // 为媒体数据设置一个CMSampleBuffer的Core Video图像缓存对象
+    CVImageBufferRef imageBuffer = CMSampleBufferGetImageBuffer(sampleBuffer);
+    // 锁定pixel buffer的基地址
+    CVPixelBufferLockBaseAddress(imageBuffer, 0);
+    // 得到pixel buffer的基地址
+    void *baseAddress = CVPixelBufferGetBaseAddress(imageBuffer);
+    // 得到pixel buffer的行字节数
+    size_t bytesPerRow = CVPixelBufferGetBytesPerRow(imageBuffer);
+    // 得到pixel buffer的宽和高
+    size_t width = CVPixelBufferGetWidth(imageBuffer);
+    size_t height = CVPixelBufferGetHeight(imageBuffer);
+    // 创建一个依赖于设备的RGB颜色空间
+    CGColorSpaceRef colorSpace = CGColorSpaceCreateDeviceRGB();
+    // 用抽样缓存的数据创建一个位图格式的图形上下文（graphics context）对象
+    CGContextRef context = CGBitmapContextCreate(baseAddress, width, height, 8, bytesPerRow, colorSpace, kCGBitmapByteOrder32Little | kCGImageAlphaPremultipliedFirst);
+    // 根据这个位图context中的像素数据创建一个Quartz image对象
+    CGImageRef quartzImage = CGBitmapContextCreateImage(context);
+    // 解锁pixel buffer
+    CVPixelBufferUnlockBaseAddress(imageBuffer,0);
+    // 释放context和颜色空间
+    CGContextRelease(context); CGColorSpaceRelease(colorSpace);
+    // 用Quartz image创建一个UIImage对象image
+    UIImage *image = [UIImage imageWithCGImage:quartzImage];
+    // 释放Quartz image对象
+    CGImageRelease(quartzImage);
+    return (image);
+}
 
 
 //特效
 - (void)specialPic{
     
+    
+    
+    
+    
+    
 }
+
+//
+#pragma mark - AVCaptureMetadataOutputObjectsDelegate
+- (void)captureOutput:(AVCaptureOutput *)captureOutput didOutputMetadataObjects:(NSArray *)metadataObjects fromConnection:(AVCaptureConnection *)connection{
+//    NSLog(@">>>>>>>>>%@",metadataObjects);
+    if (metadataObjects.count>0) {
+//        [self.session stopRunning];
+        AVMetadataMachineReadableCodeObject *metadataObject = [metadataObjects objectAtIndex :0];
+        if (metadataObject.type == AVMetadataObjectTypeFace) {
+            AVMetadataObject *objec = [self.previewLayer transformedMetadataObjectForMetadataObject:metadataObject];
+            NSLog(@">>>>>>>>>>>>>%@",objec);
+            
+            
+        }
+    }
+}
+
 
 
 
