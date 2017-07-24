@@ -11,6 +11,7 @@
 #import <Photos/Photos.h>
 #import <GLKit/GLKit.h>
 #import "AppDelegate.h"
+#import "CatLayer.h"
 
 #define kMainScreenWidth [UIScreen mainScreen].bounds.size.width
 #define kMainScreenHeight  [UIScreen mainScreen].bounds.size.height
@@ -533,12 +534,14 @@ typedef enum: NSInteger{
 #pragma mark - AVCaptureMetadataOutputObjectsDelegate
 - (void)captureOutput:(AVCaptureOutput *)captureOutput didOutputMetadataObjects:(NSArray *)metadataObjects fromConnection:(AVCaptureConnection *)connection{
 //    NSLog(@">>>>>>>>>%@",metadataObjects);
+    
     if (metadataObjects.count>0) {
 //        [self.session stopRunning];
         AVMetadataMachineReadableCodeObject *metadataObject = [metadataObjects objectAtIndex :0];
         if (metadataObject.type == AVMetadataObjectTypeFace) {
             AVMetadataObject *objec = [self.previewLayer transformedMetadataObjectForMetadataObject:metadataObject];
             NSLog(@">>>>>>>>>>>>>%@",objec);
+            
             
             
         }
