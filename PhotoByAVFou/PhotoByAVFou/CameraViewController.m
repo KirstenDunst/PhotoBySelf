@@ -560,8 +560,6 @@ typedef enum: NSInteger{
             
            
             
-            
-            
 //            图片的面部识别
 //            CIImage* image = [CIImage imageWithCGImage:aImage.CGImage];
 //            
@@ -648,8 +646,6 @@ typedef enum: NSInteger{
     }
     
     if ( allTouchesAreOnThePreviewLayer ) {
-        
-        
         self.effectiveScale = self.beginGestureScale * recognizer.scale;
         if (self.effectiveScale < 1.0){
             self.effectiveScale = 1.0;

@@ -45,7 +45,7 @@
     [headContentView addSubview:headView];
     
     earImageView = [[UIImageView  alloc]init];
-    UIImage *image = [UIImage imageNamed:@"2"];
+    UIImage *image = [UIImage imageNamed:@"1"];
     CGSize picSize = [image size];
     sizeBite = picSize.width/picSize.height;
     earImageView.image = image;
