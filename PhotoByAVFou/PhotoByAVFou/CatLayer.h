@@ -10,5 +10,6 @@
 
 @interface CatLayer : UIView
 
-- (void)addPictureForCatEarWithRect:(CGRect)frame;
+- (void)addPictureForCatEarWithRect:(CGRect)frame WithRowAngle:(CGFloat)row WithYawAngle:(CGFloat)angle;
+
 @end

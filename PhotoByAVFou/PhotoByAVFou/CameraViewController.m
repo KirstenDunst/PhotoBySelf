@@ -550,16 +550,44 @@ typedef enum: NSInteger{
             AVMetadataObject *objec = [self.previewLayer transformedMetadataObjectForMetadataObject:metadataObject];
             
             AVMetadataFaceObject *face = (AVMetadataFaceObject *)objec;
-            NSLog(@">>>>>>>>>>>>%f>>>>>>>>>%f>>>>>>>>%f>>>>>>>>>>%f",face.bounds.origin.x,face.bounds.origin.y,face.bounds.size.width,face.bounds.size.height);
-//            layerView.hidden = NO;
-            [layerView addPictureForCatEarWithRect:face.bounds];
+//            NSLog(@">>>>>>>>>>>>%f>>>>>>>>>%f>>>>>>>>%f>>>>>>>>>>%f",face.bounds.origin.x,face.bounds.origin.y,face.bounds.size.width,face.bounds.size.height);
+//           face.rollAngle图片的2d旋转
+//           face.yawAngle图片的3d旋转偏移量
+            [layerView addPictureForCatEarWithRect:face.bounds WithRowAngle:face.rollAngle WithYawAngle:face.yawAngle];
             
+            NSLog(@">>>>>>>>>>>>>>%f",face.yawAngle);
+            
+            
+           
+            
+            
+            
+//            图片的面部识别
+//            CIImage* image = [CIImage imageWithCGImage:aImage.CGImage];
+//            
+//            NSDictionary  *opts = [NSDictionary dictionaryWithObject:CIDetectorAccuracyHigh
+//                                                              forKey:CIDetectorAccuracy];
+//            
+//            CIDetector* detector = [CIDetector detectorOfType:CIDetectorTypeFace
+//                                                      context:nil
+//                                                      options:opts];
+//            
+//            //得到面部数据  
+//            NSArray* features = [detector featuresInImage:image];
+//            for (CIFaceFeature *f in features)
+//            {
+//                CGRect aRect = f.bounds;
+//                NSLog(@"%f, %f, %f, %f", aRect.origin.x, aRect.origin.y, aRect.size.width, aRect.size.height);
+//                
+//                //眼睛和嘴的位置
+//                if(f.hasLeftEyePosition) NSLog(@"Left eye %g %g\n", f.leftEyePosition.x, f.leftEyePosition.y);
+//                if(f.hasRightEyePosition) NSLog(@"Right eye %g %g\n", f.rightEyePosition.x, f.rightEyePosition.y);
+//                if(f.hasMouthPosition) NSLog(@"Mouth %g %g\n", f.mouthPosition.x, f.mouthPosition.y);  
+//            }
             
         }
     }
 }
-
-
 
 
 
