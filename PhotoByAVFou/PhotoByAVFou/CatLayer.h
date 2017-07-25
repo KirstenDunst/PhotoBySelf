@@ -10,4 +10,5 @@
 
 @interface CatLayer : UIView
 
+- (void)addPictureForCatEarWithRect:(CGRect)frame;
 @end

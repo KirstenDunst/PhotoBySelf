@@ -26,6 +26,7 @@ typedef enum: NSInteger{
     AVCaptureVideoDataOutput *videoDataOutput;
     UIImage *largeImage;
     BOOL isNeedBeautiful;
+    CatLayer *layerView;
 }
 @property GLKView *videoPreviewView;
 @property CIContext *ciContext;
@@ -202,6 +203,11 @@ typedef enum: NSInteger{
     pinch.delegate = self;
     [self.view addGestureRecognizer:pinch];
     
+    
+    //    创建猫耳朵图层
+    layerView = [[CatLayer alloc]init];
+    layerView.hidden = YES;
+    [self.previewLayer addSublayer:layerView.layer];
     
     
     NSArray *Arr  =@[@"返回",@"拍照",@"闪光灯",@"滤镜",@"特效",@"切换摄像"];
@@ -522,26 +528,31 @@ typedef enum: NSInteger{
 
 //特效
 - (void)specialPic{
-    
-    
-    
-    
-    
-    
+    static BOOL isNeedSpecial = YES;
+    if (isNeedSpecial) {
+        layerView.hidden = NO;
+    }else{
+        layerView.hidden = YES;
+    }
+    isNeedSpecial = !isNeedSpecial;
 }
 
-//
+//检测面部识别代理方法
 #pragma mark - AVCaptureMetadataOutputObjectsDelegate
 - (void)captureOutput:(AVCaptureOutput *)captureOutput didOutputMetadataObjects:(NSArray *)metadataObjects fromConnection:(AVCaptureConnection *)connection{
 //    NSLog(@">>>>>>>>>%@",metadataObjects);
     
     if (metadataObjects.count>0) {
 //        [self.session stopRunning];
+        
         AVMetadataMachineReadableCodeObject *metadataObject = [metadataObjects objectAtIndex :0];
         if (metadataObject.type == AVMetadataObjectTypeFace) {
             AVMetadataObject *objec = [self.previewLayer transformedMetadataObjectForMetadataObject:metadataObject];
-            NSLog(@">>>>>>>>>>>>>%@",objec);
             
+            AVMetadataFaceObject *face = (AVMetadataFaceObject *)objec;
+            NSLog(@">>>>>>>>>>>>%f>>>>>>>>>%f>>>>>>>>%f>>>>>>>>>>%f",face.bounds.origin.x,face.bounds.origin.y,face.bounds.size.width,face.bounds.size.height);
+//            layerView.hidden = NO;
+            [layerView addPictureForCatEarWithRect:face.bounds];
             
             
         }

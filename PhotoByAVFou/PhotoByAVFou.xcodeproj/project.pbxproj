@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		1F53B3B51F207D9400460012 /* CameraViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1F53B3B41F207D9400460012 /* CameraViewController.m */; };
 		1F868D3C1F25FB54000E5FDE /* CatLayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 1F868D3B1F25FB54000E5FDE /* CatLayer.m */; };
+		1F87B7461F26E7D3002A1CBA /* 1.png in Resources */ = {isa = PBXBuildFile; fileRef = 1F87B7451F26E7D3002A1CBA /* 1.png */; };
 		1FC5ED701F2060560046411D /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 1FC5ED6F1F2060560046411D /* main.m */; };
 		1FC5ED731F2060560046411D /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 1FC5ED721F2060560046411D /* AppDelegate.m */; };
 		1FC5ED761F2060560046411D /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1FC5ED751F2060560046411D /* ViewController.m */; };
@@ -23,6 +24,7 @@
 		1F53B3B41F207D9400460012 /* CameraViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CameraViewController.m; sourceTree = "<group>"; };
 		1F868D3A1F25FB54000E5FDE /* CatLayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CatLayer.h; sourceTree = "<group>"; };
 		1F868D3B1F25FB54000E5FDE /* CatLayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CatLayer.m; sourceTree = "<group>"; };
+		1F87B7451F26E7D3002A1CBA /* 1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = 1.png; sourceTree = "<group>"; };
 		1FC5ED6B1F2060560046411D /* PhotoByAVFou.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PhotoByAVFou.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		1FC5ED6F1F2060560046411D /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		1FC5ED711F2060560046411D /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -83,6 +85,7 @@
 				1FC5ED7A1F2060560046411D /* Assets.xcassets */,
 				1FC5ED7C1F2060560046411D /* LaunchScreen.storyboard */,
 				1FC5ED7F1F2060560046411D /* Info.plist */,
+				1F87B7451F26E7D3002A1CBA /* 1.png */,
 				1FC5ED6E1F2060560046411D /* Supporting Files */,
 			);
 			path = PhotoByAVFou;
@@ -176,6 +179,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				1FC5ED7E1F2060560046411D /* LaunchScreen.storyboard in Resources */,
+				1F87B7461F26E7D3002A1CBA /* 1.png in Resources */,
 				1FC5ED7B1F2060560046411D /* Assets.xcassets in Resources */,
 				1FC5ED791F2060560046411D /* Main.storyboard in Resources */,
 			);

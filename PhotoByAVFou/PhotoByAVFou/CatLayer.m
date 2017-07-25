@@ -8,6 +8,16 @@
 
 #import "CatLayer.h"
 
+@interface CatLayer ()
+{
+    UIView *headView;
+    UIImageView *earImageView;
+    
+//    兔子头部的双耳朵在一个地方的显示宽高比率
+    CGFloat sizeBite;
+}
+@end
+
 @implementation CatLayer
 
 
@@ -22,22 +32,32 @@
 
 - (void)createViewWithFrame:(CGRect)frame{
     
-    UILabel *label = [[UILabel alloc]init];
-    label.frame = CGRectMake(frame.origin.x, frame.origin.y, 100, 50);
-    label.font = [UIFont systemFontOfSize:17];
-    label.text = @"测试文字显示";
-    label.textColor = [UIColor grayColor];
-    label.textAlignment = 1;
-    [self addSubview:label];
+    headView = [[UIView alloc]init];
+    headView.backgroundColor = [UIColor clearColor];
+    [self addSubview:headView];
+    
+    earImageView = [[UIImageView  alloc]init];
+    UIImage *image = [UIImage imageNamed:@"1"];
+    CGSize picSize = [image size];
+    sizeBite = picSize.width/picSize.height;
+    earImageView.image = [UIImage imageNamed:@"1"];
+    
+    [self addSubview:earImageView];
+    
+}
+
+- (void)addPictureForCatEarWithRect:(CGRect)frame{
+//    做双耳朵的时候，这里添加一个笔率等比例放大缩小。
+//    CGFloat sizeBite = frame.size.width/200;
+    
+//    这里只做一个头上面的兔子耳朵的样式
+    headView.frame = frame;
+    earImageView.frame = CGRectMake(frame.origin.x, frame.origin.y-frame.size.height/sizeBite*(4/3), frame.size.width, frame.size.height/sizeBite);
+    
     
 }
 
 
-
-- (void)drawRect:(CGRect)rect{
-    
-    
-}
 
 
 
