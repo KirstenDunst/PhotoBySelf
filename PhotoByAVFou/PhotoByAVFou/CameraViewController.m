@@ -20,7 +20,7 @@ typedef enum: NSInteger{
     BTNTAG = 10,
 }BTNTags;
 
-@interface CameraViewController ()<UIGestureRecognizerDelegate,AVCaptureVideoDataOutputSampleBufferDelegate,AVCaptureMetadataOutputObjectsDelegate>
+@interface CameraViewController ()<UIGestureRecognizerDelegate,AVCaptureVideoDataOutputSampleBufferDelegate,AVCaptureMetadataOutputObjectsDelegate,UINavigationControllerDelegate, UIImagePickerControllerDelegate>
 {
      BOOL isUsingFrontFacingCamera;
     AVCaptureVideoDataOutput *videoDataOutput;
@@ -274,14 +274,10 @@ typedef enum: NSInteger{
 //    [self.session startRunning];
     
     
-   
     [self.session commitConfiguration];
     
     // then start everything
     [self.session startRunning];
-    
-    
-    
     
     
 }
@@ -299,6 +295,7 @@ typedef enum: NSInteger{
     switch (sender.tag-BTNTAG) {
         case 0:
         {
+//            返回上一界面
             [self dismissViewControllerAnimated:YES completion:^{
                 
             }];
@@ -340,18 +337,30 @@ typedef enum: NSInteger{
     }
 }
 
-
+- (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingImage:(UIImage *)image editingInfo:(nullable NSDictionary<NSString *,id> *)editingInfo NS_DEPRECATED_IOS(2_0, 3_0){
+    
+}
 //拍照
 - (void)takePhotoPicture{
-//    AVCaptureConnection *stillImageConnection = [self.stillImageOutput connectionWithMediaType:AVMediaTypeVideo];
-//    UIDeviceOrientation curDeviceOrientation = [[UIDevice currentDevice] orientation];
-//    AVCaptureVideoOrientation avcaptureOrientation = [self avOrientationForDeviceOrientation:curDeviceOrientation];
-//    [stillImageConnection setVideoOrientation:avcaptureOrientation];
-//    [stillImageConnection setVideoScaleAndCropFactor:self.effectiveScale];
+    UIImagePickerController *pictureController = [[UIImagePickerController alloc]init];
+    pictureController.sourceType = UIImagePickerControllerSourceTypeCamera;
+    pictureController.cameraCaptureMode = UIImagePickerControllerCameraCaptureModePhoto;
+    pictureController.delegate = self;
+
     
-//    [self.stillImageOutput captureStillImageAsynchronouslyFromConnection:stillImageConnection completionHandler:^(CMSampleBufferRef imageDataSampleBuffer, NSError *error) {
-//    
-//    jpegData = [AVCapturePhotoOutput JPEGPhotoDataRepresentationForJPEGSampleBuffer:imageDataSampleBuffer previewPhotoSampleBuffer:nil];
+    
+    
+    
+    
+    AVCaptureConnection *stillImageConnection = [self.stillImageOutput connectionWithMediaType:AVMediaTypeVideo];
+    UIDeviceOrientation curDeviceOrientation = [[UIDevice currentDevice] orientation];
+    AVCaptureVideoOrientation avcaptureOrientation = [self avOrientationForDeviceOrientation:curDeviceOrientation];
+    [stillImageConnection setVideoOrientation:avcaptureOrientation];
+    [stillImageConnection setVideoScaleAndCropFactor:self.effectiveScale];
+    
+    [self.stillImageOutput captureStillImageAsynchronouslyFromConnection:stillImageConnection completionHandler:^(CMSampleBufferRef imageDataSampleBuffer, NSError *error) {
+    
+        NSData *jpegData = [AVCapturePhotoOutput JPEGPhotoDataRepresentationForJPEGSampleBuffer:imageDataSampleBuffer previewPhotoSampleBuffer:nil];
     
         PHAuthorizationStatus status = [PHPhotoLibrary authorizationStatus];
         if (status == PHAuthorizationStatusDenied) {
@@ -361,10 +370,10 @@ typedef enum: NSInteger{
         }else {
             NSLog(@"用户允许当前应用访问相册");
             //2.保存图片到系统相册
-            UIImageWriteToSavedPhotosAlbum(largeImage, self, @selector(image:didFinishSavingWithError:contextInfo:), nil);
+            UIImageWriteToSavedPhotosAlbum([UIImage imageWithData:jpegData], self, @selector(image:didFinishSavingWithError:contextInfo:), nil);
         }
         
-//    }];
+    }];
 }
 - (AVCaptureVideoOrientation)avOrientationForDeviceOrientation:(UIDeviceOrientation)deviceOrientation
 {
@@ -491,6 +500,7 @@ typedef enum: NSInteger{
     }
     
     
+//    这里做一下优化，否则会很耗cpu，
    largeImage = [self imageFromSampleBuffer:sampleBuffer];
 }
 
