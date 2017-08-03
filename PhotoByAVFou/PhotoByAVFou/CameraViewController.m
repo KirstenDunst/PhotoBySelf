@@ -12,6 +12,7 @@
 #import <GLKit/GLKit.h>
 #import "AppDelegate.h"
 #import "CatLayer.h"
+#import "UIImage+Rotate.h"
 
 #define kMainScreenWidth [UIScreen mainScreen].bounds.size.width
 #define kMainScreenHeight  [UIScreen mainScreen].bounds.size.height
@@ -364,21 +365,29 @@ typedef enum: NSInteger{
         }
     }];
 }
+//图片的合并处理
 - (UIImage *)addImageToImage:(UIImage *)image2 {
+    
     UIGraphicsBeginImageContext(CGSizeMake(kMainScreenWidth, kMainScreenHeight));
     [self.previewLayer renderInContext:UIGraphicsGetCurrentContext()];
     UIImage *image1 = UIGraphicsGetImageFromCurrentImageContext();
+    if (isUsingFrontFacingCamera) {
+        image1 = [image1 flipHorizontal];
+    }
     // Draw image2
     [image2 drawInRect:CGRectMake(0, 0, kMainScreenWidth, kMainScreenHeight)];
+    
+    
     // Draw image1
     [image1 drawInRect:CGRectMake(0, 0, kMainScreenWidth, kMainScreenHeight)];
-    
+       
     UIImage *resultingImage = UIGraphicsGetImageFromCurrentImageContext();
     
     UIGraphicsEndImageContext();
     
     return resultingImage;
 }
+
 - (AVCaptureVideoOrientation)avOrientationForDeviceOrientation:(UIDeviceOrientation)deviceOrientation
 {
     AVCaptureVideoOrientation result = (AVCaptureVideoOrientation)deviceOrientation;

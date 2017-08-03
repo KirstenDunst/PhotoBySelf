@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		1F53B3B51F207D9400460012 /* CameraViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1F53B3B41F207D9400460012 /* CameraViewController.m */; };
 		1F868D3C1F25FB54000E5FDE /* CatLayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 1F868D3B1F25FB54000E5FDE /* CatLayer.m */; };
+		1F8719B11F3324E800066085 /* UIImage+Rotate.m in Sources */ = {isa = PBXBuildFile; fileRef = 1F8719B01F3324E800066085 /* UIImage+Rotate.m */; };
 		1F87B7461F26E7D3002A1CBA /* 1.png in Resources */ = {isa = PBXBuildFile; fileRef = 1F87B7451F26E7D3002A1CBA /* 1.png */; };
 		1F87B7481F2716A7002A1CBA /* 2.png in Resources */ = {isa = PBXBuildFile; fileRef = 1F87B7471F2716A7002A1CBA /* 2.png */; };
 		1FC5ED701F2060560046411D /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 1FC5ED6F1F2060560046411D /* main.m */; };
@@ -25,6 +26,8 @@
 		1F53B3B41F207D9400460012 /* CameraViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CameraViewController.m; sourceTree = "<group>"; };
 		1F868D3A1F25FB54000E5FDE /* CatLayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CatLayer.h; sourceTree = "<group>"; };
 		1F868D3B1F25FB54000E5FDE /* CatLayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CatLayer.m; sourceTree = "<group>"; };
+		1F8719AF1F3324E800066085 /* UIImage+Rotate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+Rotate.h"; sourceTree = "<group>"; };
+		1F8719B01F3324E800066085 /* UIImage+Rotate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+Rotate.m"; sourceTree = "<group>"; };
 		1F87B7451F26E7D3002A1CBA /* 1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = 1.png; sourceTree = "<group>"; };
 		1F87B7471F2716A7002A1CBA /* 2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = 2.png; sourceTree = "<group>"; };
 		1FC5ED6B1F2060560046411D /* PhotoByAVFou.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PhotoByAVFou.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -81,6 +84,8 @@
 				1FC5ED751F2060560046411D /* ViewController.m */,
 				1F53B3B31F207D9400460012 /* CameraViewController.h */,
 				1F53B3B41F207D9400460012 /* CameraViewController.m */,
+				1F8719AF1F3324E800066085 /* UIImage+Rotate.h */,
+				1F8719B01F3324E800066085 /* UIImage+Rotate.m */,
 				1F868D3A1F25FB54000E5FDE /* CatLayer.h */,
 				1F868D3B1F25FB54000E5FDE /* CatLayer.m */,
 				1FC5ED771F2060560046411D /* Main.storyboard */,
@@ -246,6 +251,7 @@
 			files = (
 				1FC5ED761F2060560046411D /* ViewController.m in Sources */,
 				1F53B3B51F207D9400460012 /* CameraViewController.m in Sources */,
+				1F8719B11F3324E800066085 /* UIImage+Rotate.m in Sources */,
 				1F868D3C1F25FB54000E5FDE /* CatLayer.m in Sources */,
 				1FC5ED731F2060560046411D /* AppDelegate.m in Sources */,
 				1FC5ED701F2060560046411D /* main.m in Sources */,
