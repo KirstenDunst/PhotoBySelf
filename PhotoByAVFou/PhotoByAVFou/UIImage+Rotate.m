@@ -1,9 +1,9 @@
 //
 //  UIImage+Rotate.m
-//  UIImage+Categories
+//  PhotoByAVFou
 //
-//  Created by lisong on 16/9/4.
-//  Copyright © 2016年 lisong. All rights reserved.
+//  Created by CSX on 2017/7/20.
+//  Copyright © 2017年 宗盛商业. All rights reserved.
 //
 
 #import "UIImage+Rotate.h"
