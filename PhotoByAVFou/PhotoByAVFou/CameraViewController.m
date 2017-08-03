@@ -27,6 +27,7 @@ typedef enum: NSInteger{
     UIImage *largeImage;
     BOOL isNeedBeautiful;
     CatLayer *layerView;
+    UIImage *lastImage;
 }
 @property GLKView *videoPreviewView;
 @property CIContext *ciContext;
@@ -203,7 +204,6 @@ typedef enum: NSInteger{
     pinch.delegate = self;
     [self.view addGestureRecognizer:pinch];
     
-    
     //    创建猫耳朵图层
     layerView = [[CatLayer alloc]init];
     layerView.hidden = YES;
@@ -337,26 +337,15 @@ typedef enum: NSInteger{
     }
 }
 
-- (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingImage:(UIImage *)image editingInfo:(nullable NSDictionary<NSString *,id> *)editingInfo NS_DEPRECATED_IOS(2_0, 3_0){
-    
-}
 //拍照
 - (void)takePhotoPicture{
-    UIImagePickerController *pictureController = [[UIImagePickerController alloc]init];
-    pictureController.sourceType = UIImagePickerControllerSourceTypeCamera;
-    pictureController.cameraCaptureMode = UIImagePickerControllerCameraCaptureModePhoto;
-    pictureController.delegate = self;
-
-    
-    
-    
-    
     
     AVCaptureConnection *stillImageConnection = [self.stillImageOutput connectionWithMediaType:AVMediaTypeVideo];
     UIDeviceOrientation curDeviceOrientation = [[UIDevice currentDevice] orientation];
     AVCaptureVideoOrientation avcaptureOrientation = [self avOrientationForDeviceOrientation:curDeviceOrientation];
     [stillImageConnection setVideoOrientation:avcaptureOrientation];
     [stillImageConnection setVideoScaleAndCropFactor:self.effectiveScale];
+
     
     [self.stillImageOutput captureStillImageAsynchronouslyFromConnection:stillImageConnection completionHandler:^(CMSampleBufferRef imageDataSampleBuffer, NSError *error) {
     
@@ -369,11 +358,26 @@ typedef enum: NSInteger{
             NSLog(@"家长控制,不允许访问");
         }else {
             NSLog(@"用户允许当前应用访问相册");
+            UIImage *bgImage = [UIImage imageWithData:jpegData];
             //2.保存图片到系统相册
-            UIImageWriteToSavedPhotosAlbum([UIImage imageWithData:jpegData], self, @selector(image:didFinishSavingWithError:contextInfo:), nil);
+            UIImageWriteToSavedPhotosAlbum([self addImageToImage:bgImage], self, @selector(image:didFinishSavingWithError:contextInfo:), nil);
         }
-        
     }];
+}
+- (UIImage *)addImageToImage:(UIImage *)image2 {
+    UIGraphicsBeginImageContext(CGSizeMake(kMainScreenWidth, kMainScreenHeight));
+    [self.previewLayer renderInContext:UIGraphicsGetCurrentContext()];
+    UIImage *image1 = UIGraphicsGetImageFromCurrentImageContext();
+    // Draw image2
+    [image2 drawInRect:CGRectMake(0, 0, kMainScreenWidth, kMainScreenHeight)];
+    // Draw image1
+    [image1 drawInRect:CGRectMake(0, 0, kMainScreenWidth, kMainScreenHeight)];
+    
+    UIImage *resultingImage = UIGraphicsGetImageFromCurrentImageContext();
+    
+    UIGraphicsEndImageContext();
+    
+    return resultingImage;
 }
 - (AVCaptureVideoOrientation)avOrientationForDeviceOrientation:(UIDeviceOrientation)deviceOrientation
 {
@@ -382,6 +386,8 @@ typedef enum: NSInteger{
         result = AVCaptureVideoOrientationLandscapeRight;
     else if ( deviceOrientation == UIDeviceOrientationLandscapeRight )
         result = AVCaptureVideoOrientationLandscapeLeft;
+    else if (deviceOrientation == UIDeviceOrientationPortrait)
+        result = AVCaptureVideoOrientationPortrait;
     return result;
 }
 // 成功保存图片到系统相册中, 必须调用此方法, 否则会报参数越界错误
@@ -540,6 +546,7 @@ typedef enum: NSInteger{
 - (void)specialPic{
     static BOOL isNeedSpecial = YES;
     if (isNeedSpecial) {
+//        AVCaptureVideoPreviewLayer *previewLayer = [[self.stillImageOutput connectionWithMediaType:AVMediaTypeVideo] videoPreviewLayer];
         layerView.hidden = NO;
     }else{
         layerView.hidden = YES;
