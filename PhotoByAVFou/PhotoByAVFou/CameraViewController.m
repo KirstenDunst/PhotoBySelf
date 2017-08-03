@@ -371,14 +371,16 @@ typedef enum: NSInteger{
     UIGraphicsBeginImageContext(CGSizeMake(kMainScreenWidth, kMainScreenHeight));
     [self.previewLayer renderInContext:UIGraphicsGetCurrentContext()];
     UIImage *image1 = UIGraphicsGetImageFromCurrentImageContext();
+//    这里需要先对图像处理，然后再画背景和修饰。
     if (isUsingFrontFacingCamera) {
+//        这里如果是前摄像头的话需要翻转layer的保存，图片前置摄像头保存图片会翻转图片。
         image1 = [image1 flipHorizontal];
     }
-    // Draw image2
+    // Draw image2，先画背景大的image
     [image2 drawInRect:CGRectMake(0, 0, kMainScreenWidth, kMainScreenHeight)];
     
     
-    // Draw image1
+    // Draw image1 然后画图像的添加
     [image1 drawInRect:CGRectMake(0, 0, kMainScreenWidth, kMainScreenHeight)];
        
     UIImage *resultingImage = UIGraphicsGetImageFromCurrentImageContext();
