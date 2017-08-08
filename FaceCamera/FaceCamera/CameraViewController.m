@@ -118,12 +118,13 @@
     
     
     GPUImageView *iv=[[GPUImageView alloc] initWithFrame:self.view.frame];
+   
     iv.fillMode=kGPUImageFillModePreserveAspectRatioAndFill;
     /*显示模式分为三种
      typedef NS_ENUM(NSUInteger, GPUImageFillModeType) {
-     kGPUImageFillModeStretch,                       // Stretch to fill the full view, which may distort the image outside of its normal aspect ratio
-     kGPUImageFillModePreserveAspectRatio,           // Maintains the aspect ratio of the source image, adding bars of the specified background color
-     kGPUImageFillModePreserveAspectRatioAndFill     // Maintains the aspect ratio of the source image, zooming in on its center to fill the view
+     kGPUImageFillModeStretch,                       // Stretch to fill the full view, which may distort the image outside of its normal aspect ratio   拉伸以填充完整的视图，这可能会扭曲图像的正常宽比
+     kGPUImageFillModePreserveAspectRatio,           // Maintains the aspect ratio of the source image, adding bars of the specified background color   维护源图像的纵横比，添加指定背景色的栏
+     kGPUImageFillModePreserveAspectRatioAndFill     // Maintains the aspect ratio of the source image, zooming in on its center to fill the view   保持源图像的纵横比，放大到其中心以填充视图
      };
      */
     [self.filterView addTarget:iv];
@@ -318,15 +319,14 @@
 //特效
 - (void)refreshButtonClick:(UIButton *)sender{
     if (sender.selected) {
-        [self.picCamera removeAllTargets];
-        [self.picCamera addTarget:self.filterView];
-    }
-    else {
-        [self.picCamera removeAllTargets];
+       
+        
+    }else {
+        
         
     }
     sender.selected = !sender.selected;
-   
+    
 }
 
 //切换摄像头
