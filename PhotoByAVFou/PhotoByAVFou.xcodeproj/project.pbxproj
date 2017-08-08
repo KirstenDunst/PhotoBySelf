@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		1F53B3B51F207D9400460012 /* CameraViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1F53B3B41F207D9400460012 /* CameraViewController.m */; };
+		1F5E95601F399EEF00819481 /* GPUImageBeautifyFilter.m in Sources */ = {isa = PBXBuildFile; fileRef = 1F5E955F1F399EEF00819481 /* GPUImageBeautifyFilter.m */; };
 		1F868D3C1F25FB54000E5FDE /* CatLayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 1F868D3B1F25FB54000E5FDE /* CatLayer.m */; };
 		1F8719B11F3324E800066085 /* UIImage+Rotate.m in Sources */ = {isa = PBXBuildFile; fileRef = 1F8719B01F3324E800066085 /* UIImage+Rotate.m */; };
 		1F87B7461F26E7D3002A1CBA /* 1.png in Resources */ = {isa = PBXBuildFile; fileRef = 1F87B7451F26E7D3002A1CBA /* 1.png */; };
@@ -24,6 +25,8 @@
 /* Begin PBXFileReference section */
 		1F53B3B31F207D9400460012 /* CameraViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CameraViewController.h; sourceTree = "<group>"; };
 		1F53B3B41F207D9400460012 /* CameraViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CameraViewController.m; sourceTree = "<group>"; };
+		1F5E955E1F399EEF00819481 /* GPUImageBeautifyFilter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GPUImageBeautifyFilter.h; sourceTree = "<group>"; };
+		1F5E955F1F399EEF00819481 /* GPUImageBeautifyFilter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GPUImageBeautifyFilter.m; sourceTree = "<group>"; };
 		1F868D3A1F25FB54000E5FDE /* CatLayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CatLayer.h; sourceTree = "<group>"; };
 		1F868D3B1F25FB54000E5FDE /* CatLayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CatLayer.m; sourceTree = "<group>"; };
 		1F8719AF1F3324E800066085 /* UIImage+Rotate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+Rotate.h"; sourceTree = "<group>"; };
@@ -84,6 +87,8 @@
 				1FC5ED751F2060560046411D /* ViewController.m */,
 				1F53B3B31F207D9400460012 /* CameraViewController.h */,
 				1F53B3B41F207D9400460012 /* CameraViewController.m */,
+				1F5E955E1F399EEF00819481 /* GPUImageBeautifyFilter.h */,
+				1F5E955F1F399EEF00819481 /* GPUImageBeautifyFilter.m */,
 				1F8719AF1F3324E800066085 /* UIImage+Rotate.h */,
 				1F8719B01F3324E800066085 /* UIImage+Rotate.m */,
 				1F868D3A1F25FB54000E5FDE /* CatLayer.h */,
@@ -158,7 +163,7 @@
 				TargetAttributes = {
 					1FC5ED6A1F2060550046411D = {
 						CreatedOnToolsVersion = 8.3.2;
-						DevelopmentTeam = BQ9TFQKXJU;
+						DevelopmentTeam = J34X25TCYP;
 						ProvisioningStyle = Automatic;
 					};
 				};
@@ -252,6 +257,7 @@
 				1FC5ED761F2060560046411D /* ViewController.m in Sources */,
 				1F53B3B51F207D9400460012 /* CameraViewController.m in Sources */,
 				1F8719B11F3324E800066085 /* UIImage+Rotate.m in Sources */,
+				1F5E95601F399EEF00819481 /* GPUImageBeautifyFilter.m in Sources */,
 				1F868D3C1F25FB54000E5FDE /* CatLayer.m in Sources */,
 				1FC5ED731F2060560046411D /* AppDelegate.m in Sources */,
 				1FC5ED701F2060560046411D /* main.m in Sources */,
@@ -375,7 +381,7 @@
 			baseConfigurationReference = BD6E3224A89A929E4D71B1B4 /* Pods-PhotoByAVFou.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				DEVELOPMENT_TEAM = BQ9TFQKXJU;
+				DEVELOPMENT_TEAM = J34X25TCYP;
 				INFOPLIST_FILE = PhotoByAVFou/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.zssy.AM.text;
@@ -388,7 +394,7 @@
 			baseConfigurationReference = 60AA485F23A80E74748B8D26 /* Pods-PhotoByAVFou.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				DEVELOPMENT_TEAM = BQ9TFQKXJU;
+				DEVELOPMENT_TEAM = J34X25TCYP;
 				INFOPLIST_FILE = PhotoByAVFou/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.zssy.AM.text;

@@ -1,13 +1,12 @@
 //
-//  GPUImageBeautifyFilter.m
-//  BeautifyFaceDemo
+//  CatImageFilter.m
+//  FaceCamera
 //
-//  Created by guikz on 16/4/28.
-//  Copyright © 2016年 guikz. All rights reserved.
+//  Created by CSX on 2017/8/8.
+//  Copyright © 2017年 宗盛商业. All rights reserved.
 //
 
-#import "GPUImageBeautifyFilter.h"
-
+#import "CatImageFilter.h"
 // Internal CombinationFilter(It should not be used outside)
 @interface GPUImageCombinationFilter : GPUImageThreeInputFilter
 {
@@ -18,7 +17,8 @@
 
 @end
 
-NSString *const kGPUImageBeautifyFragmentShaderString = SHADER_STRING
+
+NSString *const kGPUImageBeautifyFragmentShaderStr = SHADER_STRING
 (
  varying highp vec2 textureCoordinate;
  varying highp vec2 textureCoordinate2;
@@ -49,16 +49,16 @@ NSString *const kGPUImageBeautifyFragmentShaderString = SHADER_STRING
      smooth.b = log(1.0 + 0.2 * smooth.b)/log(1.2);
      gl_FragColor = smooth;
  }
-);
+ );
+
 
 @implementation GPUImageCombinationFilter
 
 - (id)init {
-    if (self = [super initWithFragmentShaderFromString:kGPUImageBeautifyFragmentShaderString]) {
+    if (self = [super initWithFragmentShaderFromString:kGPUImageBeautifyFragmentShaderStr]) {
         smoothDegreeUniform = [filterProgram uniformIndex:@"smoothDegree"];
     }
-//    设置双边模糊的度0～1.
-    self.intensity = 0.5;
+    self.intensity = 0.8;
     return self;
 }
 
@@ -68,9 +68,7 @@ NSString *const kGPUImageBeautifyFragmentShaderString = SHADER_STRING
 }
 
 @end
-
-@implementation GPUImageBeautifyFilter
-
+@implementation CatImageFilter
 - (id)init;
 {
     if (!(self = [super init]))

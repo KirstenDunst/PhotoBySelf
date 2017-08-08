@@ -12,17 +12,32 @@
 
 #import <GPUImage/GPUImage.h>
 #import "GPUImageBeautifyFilter.h"
-#import "CatFilterBySelf.h"
 
-@interface CameraViewController ()
+#import "CatLayer.h"
+#import "UIImage+Rotate.h"
 
+@interface CameraViewController ()<AVCaptureMetadataOutputObjectsDelegate>
+{
+    CatLayer *layerView;
+}
 @property (nonatomic, strong) GPUImageStillCamera *picCamera;
 @property (nonatomic, strong) GPUImageFilter *filterView;
+
+@property(nonatomic, strong)AVCaptureMetadataOutput *metadataOutput;
 
 @end
 
 @implementation CameraViewController
 
+-(AVCaptureMetadataOutput *)metadataOutput{
+    if (_metadataOutput == nil) {
+        _metadataOutput = [[AVCaptureMetadataOutput alloc]init];
+        [_metadataOutput setMetadataObjectsDelegate:self queue:dispatch_get_main_queue()];
+        //设置扫描区域
+        _metadataOutput.rectOfInterest = self.view.bounds;
+    }
+    return _metadataOutput;
+}
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
@@ -117,6 +132,26 @@
     [self.picCamera setOutputImageOrientation:UIInterfaceOrientationPortrait];
     [self.picCamera setJpegCompressionQuality:1.0];
     
+    //    创建猫耳朵图层
+    layerView = [[CatLayer alloc]init];
+    layerView.hidden = YES;
+    [iv addSubview:layerView];
+    
+    
+//    //使用二维码扫描和人脸识别的metadataOutput
+//    if ([self.picCamera ]) {
+//        [self.session addOutput:self.metadataOutput];
+//        //设置扫码格式，
+//        //        self.metadataOutput.metadataObjectTypes = @[
+//        //                                                    AVMetadataObjectTypeQRCode,
+//        //                                                    AVMetadataObjectTypeEAN13Code,
+//        //                                                    AVMetadataObjectTypeEAN8Code,
+//        //                                                    AVMetadataObjectTypeCode128Code
+//        //                                                    ];
+//        
+//        //        设置人脸识别的扫码格式
+//        self.metadataOutput.metadataObjectTypes = @[AVMetadataObjectTypeFace];
+//    }
     
 }
 - (void)viewWillAppear:(BOOL)animated{
@@ -239,7 +274,6 @@
                NSLog(@"添加图片到相册中失败");
                 return;
             }
-            
             NSLog(@"成功添加图片到相册中");
         }];
     }];
@@ -281,19 +315,18 @@
 }
 
 
-- (void)captureOutput:(AVCaptureOutput *)captureOutput
-didOutputSampleBuffer:(CMSampleBufferRef)sampleBuffer
-       fromConnection:(AVCaptureConnection *)connection
-{
-    
-}
 //特效
 - (void)refreshButtonClick:(UIButton *)sender{
-    CatFilterBySelf *catFilter = [[CatFilterBySelf alloc]initWithInput:self.picCamera];
-    [self.picCamera addTarget:catFilter];
-    [catFilter addTarget: catFilter];
+    if (sender.selected) {
+        [self.picCamera removeAllTargets];
+        [self.picCamera addTarget:self.filterView];
+    }
+    else {
+        [self.picCamera removeAllTargets];
+        
+    }
+    sender.selected = !sender.selected;
    
-
 }
 
 //切换摄像头
