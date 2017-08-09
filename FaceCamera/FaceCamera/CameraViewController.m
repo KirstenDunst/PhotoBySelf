@@ -14,7 +14,10 @@
 #import "GPUImageBeautifyFilter.h"
 
 #import "CatLayer.h"
-#import "UIImage+Rotate.h"
+
+
+#define kMainScreenWidth [UIScreen mainScreen].bounds.size.width
+#define kMainScreenHeight  [UIScreen mainScreen].bounds.size.height
 
 typedef enum: NSInteger{
     BTNTAG = 10,
@@ -97,16 +100,15 @@ typedef enum: NSInteger{
     [self.picCamera startCameraCapture];
     
     
-    //初始化预览图层
+    //初始化预览图层，这里只是为了下面的获取人脸识别解析使用和上面的[self.picCamera.captureSession addOutput:self.metadataOutput]添加使用
     self.previewLayer = [[AVCaptureVideoPreviewLayer alloc] initWithSession:self.picCamera.captureSession];
     [self.previewLayer setVideoGravity:AVLayerVideoGravityResizeAspect];
-    self.previewLayer.frame = CGRectMake(0, 0,self.view.frame.size.width, self.view.frame.size.height);
-    self.view.layer.masksToBounds = YES;
+    self.previewLayer.frame = self.view.frame;
+//    self.view.layer.masksToBounds = YES;
     [self.view.layer addSublayer:self.previewLayer];
     
     
     GPUImageView *iv=[[GPUImageView alloc] initWithFrame:self.view.frame];
-   
     iv.fillMode=kGPUImageFillModePreserveAspectRatioAndFill;
     /*显示模式分为三种
      typedef NS_ENUM(NSUInteger, GPUImageFillModeType) {
@@ -122,12 +124,9 @@ typedef enum: NSInteger{
     [self.picCamera setJpegCompressionQuality:1.0];
     
     //    创建猫耳朵图层
-    layerView = [[CatLayer alloc]init];
-    layerView.frame = self.view.frame;
+    layerView = [[CatLayer alloc]initWithFrame:self.view.frame];
     layerView.hidden = YES;
     [iv addSubview:layerView];
-//    [self.filterView addTarget:iv];
-//    [self.view addSubview:layerView];
    
 }
 
@@ -202,26 +201,32 @@ typedef enum: NSInteger{
 
 //拍照按钮
 - (void)takePhotoButtonClick:(UIButton *)sender {
-   
     [self.picCamera capturePhotoAsJPEGProcessedUpToFilter:self.filterView withCompletionHandler:^(NSData *processedJPEG, NSError *error){
-        
-//        // 1.保存图片到自定义相册
-//        PHAuthorizationStatus status = [PHPhotoLibrary authorizationStatus];
-//        if (status == PHAuthorizationStatusDenied) {
-//            NSLog(@"用户拒绝当前应用访问相册,我们需要提醒用户打开访问开关");
-//        }else if (status == PHAuthorizationStatusRestricted){
-//            NSLog(@"家长控制,不允许访问");
-//        }else if (status == PHAuthorizationStatusNotDetermined){
-//            NSLog(@"用户还没有做出选择");
-//            [self saveImageWithImage:[UIImage imageWithData:processedJPEG]];
-//        }else if (status == PHAuthorizationStatusAuthorized){
-//            NSLog(@"用户允许当前应用访问相册");
-//            [self saveImageWithImage:[UIImage imageWithData:processedJPEG]];
-//        }
-        
-        //2.保存图片到系统相册
-        UIImageWriteToSavedPhotosAlbum([UIImage imageWithData:processedJPEG], self, @selector(image:didFinishSavingWithError:contextInfo:), nil);
+        if (error) {
+            NSLog(@"%@",error.localizedDescription);
+        }else{
+            //2.保存图片到系统相册
+            UIImageWriteToSavedPhotosAlbum([self addImageToImage:[UIImage imageWithData:processedJPEG]], self, @selector(image:didFinishSavingWithError:contextInfo:), nil);
+        }
     }];
+}
+//图片的合并处理
+- (UIImage *)addImageToImage:(UIImage *)image2 {
+    UIGraphicsBeginImageContext(CGSizeMake(image2.size.width, image2.size.height));
+    [layerView.layer renderInContext:UIGraphicsGetCurrentContext()];
+    UIImage *image1 = UIGraphicsGetImageFromCurrentImageContext();
+    NSLog(@"?????????????%f>>>>>>>>>>>>>%f>>>>>>>>>>>>>%f>>>>>>>>>>>>>>>%f",image1.size.width,image1.size.height,image2.size.width,image2.size.height);
+    // Draw image2，先画背景大的image
+    [image2 drawInRect:CGRectMake(0, 0, image2.size.width, image2.size.height)];
+    
+    // Draw image1 然后画图像的添加
+    [image1 drawInRect:CGRectMake(0, 0, image2.size.width, image2.size.height)];
+    
+    UIImage *resultingImage = UIGraphicsGetImageFromCurrentImageContext();
+    
+    UIGraphicsEndImageContext();
+    
+    return resultingImage;
 }
 // 成功保存图片到系统相册中, 必须调用此方法, 否则会报参数越界错误
 - (void)image:(UIImage *)image didFinishSavingWithError:(NSError *)error contextInfo:(void *)contextInfo{
@@ -357,11 +362,9 @@ typedef enum: NSInteger{
 
 //切换摄像头
 - (void)changePhotoClick:(UIButton *)sender{
-
     [self.picCamera rotateCamera];
     
 }
-
 
 
 //检测面部识别代理方法
@@ -384,7 +387,6 @@ typedef enum: NSInteger{
         }
     }
 }
-
 
 
 - (void)didReceiveMemoryWarning {

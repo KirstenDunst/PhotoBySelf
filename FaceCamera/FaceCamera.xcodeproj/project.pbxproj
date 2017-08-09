@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		1F4FCCA11F341B7A00858DB7 /* UIImage+Rotate.m in Sources */ = {isa = PBXBuildFile; fileRef = 1F4FCC9E1F341B7A00858DB7 /* UIImage+Rotate.m */; };
 		1F4FCCA21F341B7A00858DB7 /* CatLayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 1F4FCCA01F341B7A00858DB7 /* CatLayer.m */; };
 		1F7DEA201F3AE7F8005569FE /* 1.png in Resources */ = {isa = PBXBuildFile; fileRef = 1F7DEA1E1F3AE7F8005569FE /* 1.png */; };
 		1F7DEA211F3AE7F8005569FE /* 2.png in Resources */ = {isa = PBXBuildFile; fileRef = 1F7DEA1F1F3AE7F8005569FE /* 2.png */; };
@@ -24,8 +23,6 @@
 
 /* Begin PBXFileReference section */
 		1C976E943CBDD4FCB0BB0717 /* Pods-FaceCamera.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-FaceCamera.release.xcconfig"; path = "Pods/Target Support Files/Pods-FaceCamera/Pods-FaceCamera.release.xcconfig"; sourceTree = "<group>"; };
-		1F4FCC9D1F341B7A00858DB7 /* UIImage+Rotate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+Rotate.h"; sourceTree = "<group>"; };
-		1F4FCC9E1F341B7A00858DB7 /* UIImage+Rotate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+Rotate.m"; sourceTree = "<group>"; };
 		1F4FCC9F1F341B7A00858DB7 /* CatLayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CatLayer.h; sourceTree = "<group>"; };
 		1F4FCCA01F341B7A00858DB7 /* CatLayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CatLayer.m; sourceTree = "<group>"; };
 		1F7DEA1E1F3AE7F8005569FE /* 1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = 1.png; sourceTree = "<group>"; };
@@ -98,8 +95,6 @@
 				1F8091AB1F1CA97F007A35B1 /* CameraViewController.m */,
 				1F8D55221F1DF9950066BE9D /* GPUImageBeautifyFilter.h */,
 				1F8D55231F1DF9950066BE9D /* GPUImageBeautifyFilter.m */,
-				1F4FCC9D1F341B7A00858DB7 /* UIImage+Rotate.h */,
-				1F4FCC9E1F341B7A00858DB7 /* UIImage+Rotate.m */,
 				1F4FCC9F1F341B7A00858DB7 /* CatLayer.h */,
 				1F4FCCA01F341B7A00858DB7 /* CatLayer.m */,
 				1F80919C1F1CA93D007A35B1 /* Main.storyboard */,
@@ -259,7 +254,6 @@
 				1F4FCCA21F341B7A00858DB7 /* CatLayer.m in Sources */,
 				1F8091AC1F1CA97F007A35B1 /* CameraViewController.m in Sources */,
 				1F8091981F1CA93D007A35B1 /* AppDelegate.m in Sources */,
-				1F4FCCA11F341B7A00858DB7 /* UIImage+Rotate.m in Sources */,
 				1F8091951F1CA93D007A35B1 /* main.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

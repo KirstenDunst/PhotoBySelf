@@ -360,7 +360,7 @@ typedef enum: NSInteger{
             UIImage *bgImage = [UIImage imageWithData:jpegData];
 // _videoPreviewView.snapshot获取绘制图样的UIImage,在绘制方法中不应该调用快照（这里可以先暂停绘制，保存处理之后再开放绘制，在这期间可以做一个保存图像的动画处理）。
             //2.保存图片到系统相册
-            UIImageWriteToSavedPhotosAlbum(bgImage, self, @selector(image:didFinishSavingWithError:contextInfo:), nil);
+            UIImageWriteToSavedPhotosAlbum([self addImageToImage:bgImage], self, @selector(image:didFinishSavingWithError:contextInfo:), nil);
         }
     }];
 }
@@ -373,7 +373,7 @@ typedef enum: NSInteger{
 //    这里需要先对图像处理，然后再画背景和修饰。
     if (isUsingFrontFacingCamera) {
 //        这里如果是前摄像头的话需要翻转layer的保存，图片前置摄像头保存图片会翻转图片。
-//        image1 = [image1 flipHorizontal];
+        image1 = [image1 flipHorizontal];
     }
     // Draw image2，先画背景大的image
     [image2 drawInRect:CGRectMake(0, 0, kMainScreenWidth, kMainScreenHeight)];    

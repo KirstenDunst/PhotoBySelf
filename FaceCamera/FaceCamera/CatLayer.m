@@ -23,12 +23,12 @@
 @implementation CatLayer
 
 
-- (instancetype)init
+- (instancetype)initWithFrame:(CGRect)frame
 {
-    self = [super init];
+    self = [super initWithFrame:frame];
     if (self) {
-        self.backgroundColor = [UIColor clearColor];
-        [self createViewWithFrame:[[UIScreen mainScreen] bounds]];
+        self.backgroundColor = [UIColor redColor];
+        [self createViewWithFrame:frame];
     }
     return self;
 }
