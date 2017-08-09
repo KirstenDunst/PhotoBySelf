@@ -9,6 +9,8 @@
 /* Begin PBXBuildFile section */
 		1F4FCCA11F341B7A00858DB7 /* UIImage+Rotate.m in Sources */ = {isa = PBXBuildFile; fileRef = 1F4FCC9E1F341B7A00858DB7 /* UIImage+Rotate.m */; };
 		1F4FCCA21F341B7A00858DB7 /* CatLayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 1F4FCCA01F341B7A00858DB7 /* CatLayer.m */; };
+		1F7DEA201F3AE7F8005569FE /* 1.png in Resources */ = {isa = PBXBuildFile; fileRef = 1F7DEA1E1F3AE7F8005569FE /* 1.png */; };
+		1F7DEA211F3AE7F8005569FE /* 2.png in Resources */ = {isa = PBXBuildFile; fileRef = 1F7DEA1F1F3AE7F8005569FE /* 2.png */; };
 		1F8091951F1CA93D007A35B1 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 1F8091941F1CA93D007A35B1 /* main.m */; };
 		1F8091981F1CA93D007A35B1 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 1F8091971F1CA93D007A35B1 /* AppDelegate.m */; };
 		1F80919B1F1CA93D007A35B1 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1F80919A1F1CA93D007A35B1 /* ViewController.m */; };
@@ -26,6 +28,8 @@
 		1F4FCC9E1F341B7A00858DB7 /* UIImage+Rotate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+Rotate.m"; sourceTree = "<group>"; };
 		1F4FCC9F1F341B7A00858DB7 /* CatLayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CatLayer.h; sourceTree = "<group>"; };
 		1F4FCCA01F341B7A00858DB7 /* CatLayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CatLayer.m; sourceTree = "<group>"; };
+		1F7DEA1E1F3AE7F8005569FE /* 1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = 1.png; sourceTree = "<group>"; };
+		1F7DEA1F1F3AE7F8005569FE /* 2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = 2.png; sourceTree = "<group>"; };
 		1F8091901F1CA93D007A35B1 /* FaceCamera.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FaceCamera.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		1F8091941F1CA93D007A35B1 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		1F8091961F1CA93D007A35B1 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -102,6 +106,8 @@
 				1F80919F1F1CA93D007A35B1 /* Assets.xcassets */,
 				1F8091A11F1CA93D007A35B1 /* LaunchScreen.storyboard */,
 				1F8091A41F1CA93D007A35B1 /* Info.plist */,
+				1F7DEA1E1F3AE7F8005569FE /* 1.png */,
+				1F7DEA1F1F3AE7F8005569FE /* 2.png */,
 				1F8091931F1CA93D007A35B1 /* Supporting Files */,
 			);
 			path = FaceCamera;
@@ -186,6 +192,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				1F8091A31F1CA93D007A35B1 /* LaunchScreen.storyboard in Resources */,
+				1F7DEA201F3AE7F8005569FE /* 1.png in Resources */,
+				1F7DEA211F3AE7F8005569FE /* 2.png in Resources */,
 				1F8091A01F1CA93D007A35B1 /* Assets.xcassets in Resources */,
 				1F80919E1F1CA93D007A35B1 /* Main.storyboard in Resources */,
 			);

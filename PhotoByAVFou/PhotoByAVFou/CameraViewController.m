@@ -115,7 +115,6 @@ typedef enum: NSInteger{
     self.session = [[AVCaptureSession alloc] init];
     self.session.sessionPreset = preset;
     
-    NSError *error;
     
     AVCaptureDevice *device = [AVCaptureDevice defaultDeviceWithMediaType:AVMediaTypeVideo];
 //    后置摄像头（稍后做安全判断）
@@ -135,6 +134,7 @@ typedef enum: NSInteger{
     [device setFlashMode:AVCaptureFlashModeAuto];
     [device unlockForConfiguration];
     
+    NSError *error;
     self.videoInput = [[AVCaptureDeviceInput alloc] initWithDevice:device error:&error];
     if (error) {
         NSLog(@"%@",error);
@@ -555,7 +555,7 @@ typedef enum: NSInteger{
 //检测面部识别代理方法
 #pragma mark - AVCaptureMetadataOutputObjectsDelegate
 - (void)captureOutput:(AVCaptureOutput *)captureOutput didOutputMetadataObjects:(NSArray *)metadataObjects fromConnection:(AVCaptureConnection *)connection{
-//    NSLog(@">>>>>>>>>%@",metadataObjects);
+    NSLog(@">>>>>>>>>%@",metadataObjects);
     
     if (metadataObjects.count>0) {
 //        [self.session stopRunning];
@@ -565,7 +565,7 @@ typedef enum: NSInteger{
             AVMetadataObject *objec = [self.previewLayer transformedMetadataObjectForMetadataObject:metadataObject];
             
             AVMetadataFaceObject *face = (AVMetadataFaceObject *)objec;
-//            NSLog(@">>>>>>>>>>>>%f>>>>>>>>>%f>>>>>>>>%f>>>>>>>>>>%f",face.bounds.origin.x,face.bounds.origin.y,face.bounds.size.width,face.bounds.size.height);
+            NSLog(@">>>>>>>>>>>>%f>>>>>>>>>%f>>>>>>>>%f>>>>>>>>>>%f",face.bounds.origin.x,face.bounds.origin.y,face.bounds.size.width,face.bounds.size.height);
 //           face.rollAngle图片的2d旋转
 //           face.yawAngle图片的3d旋转偏移量
             [layerView addPictureForCatEarWithRect:face.bounds WithRowAngle:face.rollAngle WithYawAngle:face.yawAngle];

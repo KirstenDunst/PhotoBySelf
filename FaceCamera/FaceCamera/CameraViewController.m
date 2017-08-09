@@ -16,14 +16,24 @@
 #import "CatLayer.h"
 #import "UIImage+Rotate.h"
 
+typedef enum: NSInteger{
+    BTNTAG = 10,
+}BTNTags;
+
 @interface CameraViewController ()<AVCaptureMetadataOutputObjectsDelegate>
 {
     CatLayer *layerView;
 }
+/**
+ *  预览图层
+ */
+@property (nonatomic, strong) AVCaptureVideoPreviewLayer* previewLayer;
+
 @property (nonatomic, strong) GPUImageStillCamera *picCamera;
 @property (nonatomic, strong) GPUImageFilter *filterView;
 
 @property(nonatomic, strong)AVCaptureMetadataOutput *metadataOutput;
+
 
 @end
 
@@ -46,75 +56,53 @@
     [self createView];
 }
 - (void)createView{
-    UIButton *myCreateButton = [UIButton buttonWithType:UIButtonTypeCustom];
-    myCreateButton.frame = CGRectMake(0, 20, 100, 50);
-    myCreateButton.layer.cornerRadius = 50;
-    myCreateButton.clipsToBounds = YES;
-    [myCreateButton setBackgroundColor:[UIColor grayColor]];
-    [myCreateButton setTitle:@"返回" forState:UIControlStateNormal];
-    [myCreateButton addTarget:self action:@selector(buttonChoose:) forControlEvents:UIControlEventTouchUpInside];
-    [self.view addSubview:myCreateButton];
-
-    UIButton *myCreateButton1 = [UIButton buttonWithType:UIButtonTypeCustom];
-    myCreateButton1.frame = CGRectMake(0, 50+20, 100, 50);
-    myCreateButton1.layer.cornerRadius = 50;
-    myCreateButton1.clipsToBounds = YES;
-    [myCreateButton1 setBackgroundColor:[UIColor grayColor]];
-    [myCreateButton1 setTitle:@"拍照" forState:UIControlStateNormal];
-    [myCreateButton1 addTarget:self action:@selector(takePhotoButtonClick:) forControlEvents:UIControlEventTouchUpInside];
-    [self.view addSubview:myCreateButton1];
-    
-    UIButton *myCreateButton2 = [UIButton buttonWithType:UIButtonTypeCustom];
-    myCreateButton2.frame = CGRectMake(0, 100+20, 100, 50);
-    myCreateButton2.layer.cornerRadius = 50;
-    myCreateButton2.clipsToBounds = YES;
-    [myCreateButton2 setBackgroundColor:[UIColor grayColor]];
-    [myCreateButton2 setTitle:@"闪光灯" forState:UIControlStateNormal];
-    [myCreateButton2 addTarget:self action:@selector(flashButtonClick:) forControlEvents:UIControlEventTouchUpInside];
-    [self.view addSubview:myCreateButton2];
-    
-    
-    UIButton *myCreateButton3 = [UIButton buttonWithType:UIButtonTypeCustom];
-    myCreateButton3.frame = CGRectMake(0, 150+20, 100, 50);
-    myCreateButton3.layer.cornerRadius = 50;
-    myCreateButton3.clipsToBounds = YES;
-    [myCreateButton3 setBackgroundColor:[UIColor grayColor]];
-    [myCreateButton3 setTitle:@"美颜" forState:UIControlStateNormal];
-    [myCreateButton3 addTarget:self action:@selector(beautifulButtonClick:) forControlEvents:UIControlEventTouchUpInside];
-    [self.view addSubview:myCreateButton3];
-    
-    
-    UIButton *myCreateButton4 = [UIButton buttonWithType:UIButtonTypeCustom];
-    myCreateButton4.frame = CGRectMake(0, 200+20, 100, 50);
-    myCreateButton4.layer.cornerRadius = 50;
-    myCreateButton4.clipsToBounds = YES;
-    [myCreateButton4 setBackgroundColor:[UIColor grayColor]];
-    [myCreateButton4 setTitle:@"特效" forState:UIControlStateNormal];
-    [myCreateButton4 addTarget:self action:@selector(refreshButtonClick:) forControlEvents:UIControlEventTouchUpInside];
-    [self.view addSubview:myCreateButton4];
-    
-    
-    UIButton *myCreateButton5 = [UIButton buttonWithType:UIButtonTypeCustom];
-    myCreateButton5.frame = CGRectMake(0, 250+20, 100, 50);
-    myCreateButton5.layer.cornerRadius = 50;
-    myCreateButton5.clipsToBounds = YES;
-    [myCreateButton5 setBackgroundColor:[UIColor grayColor]];
-    [myCreateButton5 setTitle:@"切换摄像头" forState:UIControlStateNormal];
-    [myCreateButton5 addTarget:self action:@selector(changePhotoClick:) forControlEvents:UIControlEventTouchUpInside];
-    [self.view addSubview:myCreateButton5];
+    NSArray *Arr = @[@"返回",@"拍照",@"闪光灯",@"美颜",@"特效",@"切换摄像"];
+    for (int i = 0; i<Arr.count; i++) {
+        UIButton *myCreateButton = [UIButton buttonWithType:UIButtonTypeCustom];
+        myCreateButton.frame = CGRectMake(0, 20+50*i, 100, 50);
+        myCreateButton.layer.cornerRadius = 50;
+        myCreateButton.clipsToBounds = YES;
+        myCreateButton.tag = BTNTAG+i;
+        [myCreateButton setBackgroundColor:[UIColor grayColor]];
+        [myCreateButton setTitle:Arr[i] forState:UIControlStateNormal];
+        [myCreateButton addTarget:self action:@selector(buttonChoose:) forControlEvents:UIControlEventTouchUpInside];
+        [self.view addSubview:myCreateButton];
+    }
 }
+
 - (void)initAVCaptureSession{
-    
+
 //    AVCaptureSessionPreset640x480设置过大的话会导致摄像头切换不了，canAddInput不支持那么大的输入比率
+
     self.picCamera = [[GPUImageStillCamera alloc] initWithSessionPreset:AVCaptureSessionPreset640x480 cameraPosition:AVCaptureDevicePositionBack];
     //    [self.videoCamera setCaptureSessionPreset:AVCaptureSessionPreset640x480];
     self.picCamera.outputImageOrientation = UIInterfaceOrientationPortraitUpsideDown;
     self.picCamera.horizontallyMirrorFrontFacingCamera = YES;
     self.filterView = [[GPUImageFilter alloc] init];
     [self.picCamera addTarget:self.filterView];
+    //使用二维码扫描和人脸识别的metadataOutput
+    if ([self.picCamera.captureSession canAddOutput:self.metadataOutput]) {
+        [self.picCamera.captureSession addOutput:self.metadataOutput];
+        //设置扫码格式，
+//                self.metadataOutput.metadataObjectTypes = @[
+//                                                            AVMetadataObjectTypeQRCode,
+//                                                            AVMetadataObjectTypeEAN13Code,
+//                                                            AVMetadataObjectTypeEAN8Code,
+//                                                            AVMetadataObjectTypeCode128Code
+//                                                            ];
+        
+        //        设置人脸识别的扫码格式
+        self.metadataOutput.metadataObjectTypes = @[AVMetadataObjectTypeFace];
+    }
     [self.picCamera startCameraCapture];
     
-   
+    
+    //初始化预览图层
+    self.previewLayer = [[AVCaptureVideoPreviewLayer alloc] initWithSession:self.picCamera.captureSession];
+    [self.previewLayer setVideoGravity:AVLayerVideoGravityResizeAspect];
+    self.previewLayer.frame = CGRectMake(0, 0,self.view.frame.size.width, self.view.frame.size.height);
+    self.view.layer.masksToBounds = YES;
+    [self.view.layer addSublayer:self.previewLayer];
     
     
     GPUImageView *iv=[[GPUImageView alloc] initWithFrame:self.view.frame];
@@ -135,26 +123,60 @@
     
     //    创建猫耳朵图层
     layerView = [[CatLayer alloc]init];
+    layerView.frame = self.view.frame;
     layerView.hidden = YES;
     [iv addSubview:layerView];
-    
-    
-//    //使用二维码扫描和人脸识别的metadataOutput
-//    if ([self.picCamera ]) {
-//        [self.session addOutput:self.metadataOutput];
-//        //设置扫码格式，
-//        //        self.metadataOutput.metadataObjectTypes = @[
-//        //                                                    AVMetadataObjectTypeQRCode,
-//        //                                                    AVMetadataObjectTypeEAN13Code,
-//        //                                                    AVMetadataObjectTypeEAN8Code,
-//        //                                                    AVMetadataObjectTypeCode128Code
-//        //                                                    ];
-//        
-//        //        设置人脸识别的扫码格式
-//        self.metadataOutput.metadataObjectTypes = @[AVMetadataObjectTypeFace];
-//    }
-    
+//    [self.filterView addTarget:iv];
+//    [self.view addSubview:layerView];
+   
 }
+
+- (void)buttonChoose:(UIButton *)sender{
+    switch (sender.tag-BTNTAG) {
+        case 0:
+        {
+            //            返回上一界面
+            [self dismissViewControllerAnimated:YES completion:^{
+                
+            }];
+        }
+            break;
+        case 1:
+        {
+            //            拍照
+            [self takePhotoButtonClick:sender];
+        }
+            break;
+        case 2:
+        {
+            //            闪光灯
+            [self flashButtonClick:sender];
+        }
+            break;
+        case 3:
+        {
+            //            美颜
+            [self beautifulButtonClick:sender];
+        }
+            break;
+        case 4:
+        {
+            //            特效
+            [self refreshButtonClick:sender];
+        }
+            break;
+        case 5:
+        {
+            //            切换摄像头
+            [self changePhotoClick:sender];
+        }
+            break;
+            
+        default:
+            break;
+    }
+}
+
 - (void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:YES];
 
@@ -196,7 +218,6 @@
 //            NSLog(@"用户允许当前应用访问相册");
 //            [self saveImageWithImage:[UIImage imageWithData:processedJPEG]];
 //        }
-        
         
         //2.保存图片到系统相册
         UIImageWriteToSavedPhotosAlbum([UIImage imageWithData:processedJPEG], self, @selector(image:didFinishSavingWithError:contextInfo:), nil);
@@ -318,15 +339,20 @@
 
 //特效
 - (void)refreshButtonClick:(UIButton *)sender{
-    if (sender.selected) {
-       
-        
+    if (!sender.selected) {
+        layerView.hidden = NO;
+//        添加美颜处理
+        [self.picCamera removeAllTargets];
+        GPUImageBeautifyFilter *beautifyFilter = [[GPUImageBeautifyFilter alloc] init];
+        [self.picCamera addTarget:beautifyFilter];
+        [beautifyFilter addTarget:self.filterView];
     }else {
-        
-        
+        layerView.hidden = YES;
+//        去除美颜效果
+        [self.picCamera removeAllTargets];
+        [self.picCamera addTarget:self.filterView];
     }
     sender.selected = !sender.selected;
-    
 }
 
 //切换摄像头
@@ -338,11 +364,25 @@
 
 
 
-//返回按钮
-- (void)buttonChoose:(UIButton *)sender{
-    [self dismissViewControllerAnimated:YES completion:^{
-        
-    }];
+//检测面部识别代理方法
+#pragma mark - AVCaptureMetadataOutputObjectsDelegate
+- (void)captureOutput:(AVCaptureOutput *)captureOutput didOutputMetadataObjects:(NSArray *)metadataObjects fromConnection:(AVCaptureConnection *)connection{
+    
+    NSLog(@"//////////////%@",metadataObjects);  
+    
+    if (metadataObjects.count>0) {
+        AVMetadataMachineReadableCodeObject *metadataObject = [metadataObjects objectAtIndex :0];
+        if (metadataObject.type == AVMetadataObjectTypeFace) {
+            
+            AVMetadataObject *objec = [self.previewLayer transformedMetadataObjectForMetadataObject:metadataObject];
+            
+            AVMetadataFaceObject *face = (AVMetadataFaceObject *)objec;
+        NSLog(@">>>>>>>>>>>>%f>>>>>>>>>%f>>>>>>>>%f>>>>>>>>>>%f",face.bounds.origin.x,face.bounds.origin.y,face.bounds.size.width,face.bounds.size.height);
+            
+            [layerView addPictureForCatEarWithRect:face.bounds WithRowAngle:face.rollAngle WithYawAngle:face.yawAngle];
+            
+        }
+    }
 }
 
 

@@ -57,11 +57,11 @@
 - (void)addPictureForCatEarWithRect:(CGRect)frame WithRowAngle:(CGFloat)row WithYawAngle:(CGFloat)angle{
 //    做双耳朵的时候，这里添加一个笔率等比例放大缩小。
 //    CGFloat sizeBite = frame.size.width/200;
-    
+    NSLog(@">>>>>>>>>>>>>>>>>>>>>%f",sizeBite);
     headContentView.center = CGPointMake(frame.origin.x+frame.size.width/2, frame.origin.y+frame.size.height/2);
-    headContentView.bounds = CGRectMake(0, 0, frame.size.width, frame.size.height+frame.size.width/sizeBite*2);
+    headContentView.bounds = CGRectMake(0, 0, frame.size.width, (frame.size.height+frame.size.width/sizeBite*2));
 //        这里只做一个头上面的兔子耳朵的样式
-     headView.center = headContentView.center;
+    headView.center = headContentView.center;
     headView.bounds = CGRectMake(0, 0, frame.size.width, frame.size.height);
     earImageView.frame = CGRectMake(0, 0, frame.size.width, frame.size.width/sizeBite);
     NSLog(@">>>>>>>>>>>>>>%f",row);
@@ -81,7 +81,6 @@
     //            CGAffineTransform transform = map.transform;
     //            transform = CGAffineTransformScale(transform, 2,2);
     //            map.transform = transform;
-    
 }
 
 
