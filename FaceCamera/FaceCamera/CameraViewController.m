@@ -7,7 +7,7 @@
 //
 
 #import "CameraViewController.h"
-//由于后面我们需要将拍摄好的照片写入系统相册中，所以我们在这里还需要导入一个相册需要的头文件
+
 #import <Photos/Photos.h>
 
 #import <GPUImage/GPUImage.h>
@@ -205,8 +205,17 @@ typedef enum: NSInteger{
         if (error) {
             NSLog(@"%@",error.localizedDescription);
         }else{
-            //2.保存图片到系统相册
-            UIImageWriteToSavedPhotosAlbum([self addImageToImage:[UIImage imageWithData:processedJPEG]], self, @selector(image:didFinishSavingWithError:contextInfo:), nil);
+            
+            PHAuthorizationStatus status = [PHPhotoLibrary authorizationStatus];
+            if (status == PHAuthorizationStatusDenied) {
+                NSLog(@"用户拒绝当前应用访问相册,我们需要提醒用户打开访问开关");
+            }else if (status == PHAuthorizationStatusRestricted){
+                NSLog(@"家长控制,不允许访问");
+            }else {
+                NSLog(@"用户允许当前应用访问相册");
+                //2.保存图片到系统相册。
+                UIImageWriteToSavedPhotosAlbum([self addImageToImage:[UIImage imageWithData:processedJPEG]], self, @selector(image:didFinishSavingWithError:contextInfo:), nil);
+            }
         }
     }];
 }

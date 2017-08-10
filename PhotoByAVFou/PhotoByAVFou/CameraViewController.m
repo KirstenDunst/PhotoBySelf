@@ -8,6 +8,7 @@
 
 #import "CameraViewController.h"
 #import <AVFoundation/AVFoundation.h>
+//由于后面我们需要将拍摄好的照片写入系统相册中，所以我们在这里还需要导入一个相册需要的头文件
 #import <Photos/Photos.h>
 #import <GLKit/GLKit.h>
 #import "AppDelegate.h"
