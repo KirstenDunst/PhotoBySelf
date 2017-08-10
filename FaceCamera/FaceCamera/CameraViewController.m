@@ -26,6 +26,7 @@ typedef enum: NSInteger{
 @interface CameraViewController ()<AVCaptureMetadataOutputObjectsDelegate>
 {
     CatLayer *layerView;
+    BOOL isNeedCatLayer;
 }
 /**
  *  预览图层
@@ -359,7 +360,9 @@ typedef enum: NSInteger{
 
 //特效
 - (void)refreshButtonClick:(UIButton *)sender{
-    if (!sender.selected) {
+     isNeedCatLayer = !isNeedCatLayer;
+    
+    if (isNeedCatLayer) {
         layerView.hidden = NO;
 //        添加美颜处理
         [self.picCamera removeAllTargets];
@@ -372,7 +375,6 @@ typedef enum: NSInteger{
         [self.picCamera removeAllTargets];
         [self.picCamera addTarget:self.filterView];
     }
-    sender.selected = !sender.selected;
 }
 
 //切换摄像头
@@ -386,19 +388,32 @@ typedef enum: NSInteger{
 #pragma mark - AVCaptureMetadataOutputObjectsDelegate
 - (void)captureOutput:(AVCaptureOutput *)captureOutput didOutputMetadataObjects:(NSArray *)metadataObjects fromConnection:(AVCaptureConnection *)connection{
     
-    NSLog(@"//////////////%@",metadataObjects);  
+    static BOOL haveFace;
     
+    NSLog(@"//////////////%@",metadataObjects);
     if (metadataObjects.count>0) {
-        AVMetadataMachineReadableCodeObject *metadataObject = [metadataObjects objectAtIndex :0];
-        if (metadataObject.type == AVMetadataObjectTypeFace) {
-            AVMetadataObject *objec = [self.previewLayer transformedMetadataObjectForMetadataObject:metadataObject];
-            
-            AVMetadataFaceObject *face = (AVMetadataFaceObject *)objec;
-        NSLog(@">>>>>>>>>>>>%f>>>>>>>>>%f>>>>>>>>%f>>>>>>>>>>%f",face.bounds.origin.x,face.bounds.origin.y,face.bounds.size.width,face.bounds.size.height);
-            
-//            这里像素位置的叠加是添加layer图层的没有像素采集的480*640的差距位置信息。
-            [layerView addPictureForCatEarWithRect:CGRectMake(face.bounds.origin.x-(self.view.frame.size.width-480)/2,face.bounds.origin.y-(self.view.frame.size.height-640)/2,face.bounds.size.width,face.bounds.size.height) WithRowAngle:face.rollAngle WithYawAngle:face.yawAngle];
+        haveFace = YES;
+    }else{
+        haveFace = NO;
+    }
+    
+    if (isNeedCatLayer) {
+        if (haveFace) {
+            AVMetadataMachineReadableCodeObject *metadataObject = [metadataObjects objectAtIndex :0];
+            if (metadataObject.type == AVMetadataObjectTypeFace) {
+                AVMetadataObject *objec = [self.previewLayer transformedMetadataObjectForMetadataObject:metadataObject];
+                
+                AVMetadataFaceObject *face = (AVMetadataFaceObject *)objec;
+                NSLog(@">>>>>>>>>>>>%f>>>>>>>>>%f>>>>>>>>%f>>>>>>>>>>%f",face.bounds.origin.x,face.bounds.origin.y,face.bounds.size.width,face.bounds.size.height);
+                layerView.hidden = NO;
+                //            这里像素位置的叠加是添加layer图层的没有像素采集的480*640的差距位置信息。
+                [layerView addPictureForCatEarWithRect:CGRectMake(face.bounds.origin.x-(self.view.frame.size.width-480)/2,face.bounds.origin.y-(self.view.frame.size.height-640)/2,face.bounds.size.width,face.bounds.size.height) WithRowAngle:face.rollAngle WithYawAngle:face.yawAngle];
+            }
+        }else{
+            layerView.hidden = YES;
         }
+    }else{
+        layerView.hidden = YES;
     }
 }
 
