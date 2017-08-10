@@ -230,8 +230,6 @@ typedef enum: NSInteger{
     _videoPreviewView.enableSetNeedsDisplay = NO;
     _videoPreviewView.transform = CGAffineTransformMakeRotation(M_PI_2);
     _videoPreviewView.frame = self.view.bounds;
-//    [self.previewLayer addSublayer:_videoPreviewView.layer];
-//    [self.previewLayer sendSubviewToBack:_videoPreviewView];
     isNeedBeautiful = YES;
     
     [_videoPreviewView bindDrawable];
@@ -248,29 +246,6 @@ typedef enum: NSInteger{
     }
 }
 - (void)initWithCamera{
-    
-//    NSDictionary *outputSettingsVideo = @{ (id)kCVPixelBufferPixelFormatTypeKey : [NSNumber numberWithInteger:kCVPixelFormatType_32BGRA]};
-//    // create and configure video data output
-//    AVCaptureVideoDataOutput *videoDataOutput = [[AVCaptureVideoDataOutput alloc] init];
-//    videoDataOutput.videoSettings = outputSettingsVideo;
-//    
-//    // create the dispatch queue for handling capture session delegate method calls
-//    _sessionQueue = dispatch_queue_create("capture_session_queue", NULL);
-//    [videoDataOutput setSampleBufferDelegate:self queue:_sessionQueue];
-//    
-//    videoDataOutput.alwaysDiscardsLateVideoFrames = YES;
-//    [self.session beginConfiguration];
-//    if ([self.session canAddOutput:videoDataOutput]) {
-//        [self.session addOutput:videoDataOutput];
-//    }else{
-//        NSLog(@"Cannot add video data output");
-//        self.session = nil;
-//        return;
-//    }
-//    [self.session commitConfiguration];
-//    
-//    // then start everything
-//    [self.session startRunning];
     
     
     [self.session commitConfiguration];
