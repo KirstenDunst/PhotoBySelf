@@ -123,8 +123,8 @@ typedef enum: NSInteger{
     [self.picCamera setOutputImageOrientation:UIInterfaceOrientationPortrait];
     [self.picCamera setJpegCompressionQuality:1.0];
     
-    //    创建猫耳朵图层
-    layerView = [[CatLayer alloc]initWithFrame:self.view.frame];
+    //    创建猫耳朵图层，这里坐标控制大小要和图像采集的大小相适应。不然合并图层的时候会存在压缩的问题。
+    layerView = [[CatLayer alloc]initWithFrame:CGRectMake((iv.frame.size.width-480)/2, (iv.frame.size.height-640)/2, 480, 640)];
     layerView.hidden = YES;
     [iv addSubview:layerView];
    
@@ -136,7 +136,6 @@ typedef enum: NSInteger{
         {
             //            返回上一界面
             [self dismissViewControllerAnimated:YES completion:^{
-                
             }];
         }
             break;
@@ -220,7 +219,7 @@ typedef enum: NSInteger{
     [image2 drawInRect:CGRectMake(0, 0, image2.size.width, image2.size.height)];
     
     // Draw image1 然后画图像的添加
-    [image1 drawInRect:CGRectMake(0, 0, image2.size.width, image2.size.height)];
+    [image1 drawInRect:CGRectMake((image2.size.width-image1.size.width)/2, (image2.size.height-image1.size.height)/2, image1.size.width, image1.size.height)];
     
     UIImage *resultingImage = UIGraphicsGetImageFromCurrentImageContext();
     
@@ -228,6 +227,22 @@ typedef enum: NSInteger{
     
     return resultingImage;
 }
+//测试时的一个view转image的处理方式
+//- (UIImage*) imageWithUIView:(UIView*) view
+//{
+//    UIGraphicsBeginImageContext(view.bounds.size);
+//    
+//    CGContextRef context = UIGraphicsGetCurrentContext();
+//    
+//    [view.layer renderInContext:context];
+//    
+//    UIImage* tImage = UIGraphicsGetImageFromCurrentImageContext();
+//    
+//    UIGraphicsEndImageContext();
+//    
+//    return tImage;
+//}
+
 // 成功保存图片到系统相册中, 必须调用此方法, 否则会报参数越界错误
 - (void)image:(UIImage *)image didFinishSavingWithError:(NSError *)error contextInfo:(void *)contextInfo{
     if (error) {
@@ -376,14 +391,13 @@ typedef enum: NSInteger{
     if (metadataObjects.count>0) {
         AVMetadataMachineReadableCodeObject *metadataObject = [metadataObjects objectAtIndex :0];
         if (metadataObject.type == AVMetadataObjectTypeFace) {
-            
             AVMetadataObject *objec = [self.previewLayer transformedMetadataObjectForMetadataObject:metadataObject];
             
             AVMetadataFaceObject *face = (AVMetadataFaceObject *)objec;
         NSLog(@">>>>>>>>>>>>%f>>>>>>>>>%f>>>>>>>>%f>>>>>>>>>>%f",face.bounds.origin.x,face.bounds.origin.y,face.bounds.size.width,face.bounds.size.height);
             
-            [layerView addPictureForCatEarWithRect:face.bounds WithRowAngle:face.rollAngle WithYawAngle:face.yawAngle];
-            
+//            这里像素位置的叠加是添加layer图层的没有像素采集的480*640的差距位置信息。
+            [layerView addPictureForCatEarWithRect:CGRectMake(face.bounds.origin.x-(self.view.frame.size.width-480)/2,face.bounds.origin.y-(self.view.frame.size.height-640)/2,face.bounds.size.width,face.bounds.size.height) WithRowAngle:face.rollAngle WithYawAngle:face.yawAngle];
         }
     }
 }
